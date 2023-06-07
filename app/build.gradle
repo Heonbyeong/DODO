@@ -80,6 +80,8 @@ dependencies {
     implementation "org.orbit-mvi:orbit-viewmodel:$orbit_version"
     implementation "org.orbit-mvi:orbit-compose:$orbit_version"
 
+    def splash_version = "1.0.0"
+    implementation "androidx.core:core-splashscreen:$splash_version"
 }
 
 kapt {
