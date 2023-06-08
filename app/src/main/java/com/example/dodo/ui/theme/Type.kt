@@ -1,6 +1,6 @@
 package com.example.dodo.ui.theme
 
-import androidx.compose.material3.Typography
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -22,10 +22,47 @@ val cherrybomb = FontFamily(
     Font(R.font.cherrybombone, FontWeight.Normal, FontStyle.Normal)
 )
 
-val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = cherrybomb,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+val RegularC32 = TextStyle(
+    fontFamily = cherrybomb,
+    fontWeight = FontWeight.Normal,
+    fontSize = 32.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+val RegularN12 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Normal,
+    fontSize = 12.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+val BoldN12 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Bold,
+    fontSize = 12.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+val BlackN10 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Black,
+    fontSize = 10.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+val BlackN12 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Black,
+    fontSize = 12.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
     )
 )
