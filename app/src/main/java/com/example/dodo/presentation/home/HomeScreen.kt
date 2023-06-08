@@ -23,11 +23,20 @@ fun HomeScreen() {
             text = "dodo",
             style = RegularC32
         )
+        val todoList = emptyList<Unit>() //TODO 테스트 용
         var selectDate by remember { mutableStateOf("") } // TODO 테스트 용
         HorizontalCalendar(
+            modifier = Modifier.padding(bottom = 20.dp),
             onSelectedDate = { date ->
                 selectDate = date.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
             }
         )
+
+        if (todoList.isNotEmpty()) {
+            HomeTodoListView()
+        } else {
+            HomeTodoListEmptyView(modifier = Modifier.fillMaxSize())
+        }
+
     }
 }
