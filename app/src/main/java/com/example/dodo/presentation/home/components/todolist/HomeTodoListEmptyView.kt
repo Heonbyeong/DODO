@@ -1,4 +1,4 @@
-package com.example.dodo.presentation.home
+package com.example.dodo.presentation.home.components.todolist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +17,6 @@ import com.example.dodo.ui.theme.RegularN12
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray03
 import com.example.dodo.ui.theme.gray09
-
-@Composable
-fun HomeTodoListView() {
-
-}
 
 @Composable
 fun HomeTodoListEmptyView(
