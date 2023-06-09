@@ -1,6 +1,5 @@
 package com.example.dodo.presentation.home.components.todolist
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +23,7 @@ import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.MediumN10
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray07
+import com.example.dodo.util.noRippleClickable
 
 @Composable
 fun HomeTodoListItem(
@@ -43,7 +43,7 @@ fun HomeTodoListItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {  }, // TODO
+                .noRippleClickable {  }, // TODO
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
