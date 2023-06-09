@@ -3,7 +3,6 @@ package com.example.dodo.presentation.home.components.todolist
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -21,6 +20,7 @@ import com.example.dodo.R
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray08
 import com.example.dodo.ui.theme.gray09
+import com.example.dodo.util.noRippleClickable
 
 @Composable
 fun HomeTodoListCheckBox(
@@ -35,7 +35,7 @@ fun HomeTodoListCheckBox(
                 .size(20.dp)
                 .clip(shape = RoundedCornerShape(5.dp))
                 .background(color = gray0)
-                .clickable {
+                .noRippleClickable {
                     onCheckedChange(checked)
                     isChecked = !isChecked
                 },

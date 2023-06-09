@@ -2,7 +2,6 @@ package com.example.dodo.presentation.home.components.calendar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +37,7 @@ import com.example.dodo.ui.theme.gray08
 import com.example.dodo.ui.theme.gray09
 import com.example.dodo.util.conditional
 import com.example.dodo.util.dateFormat
+import com.example.dodo.util.noRippleClickable
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -180,7 +180,7 @@ fun CalendarDay(
             .conditional(!isToday && !isSelected) {
                 background(gray08)
             }
-            .clickable { onSelectedDate(date) },
+            .noRippleClickable { onSelectedDate(date) },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
 
