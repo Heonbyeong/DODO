@@ -2,7 +2,10 @@ package com.example.dodo.presentation.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,7 +20,12 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun HomeScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+    ) {
         Text(
             modifier = Modifier.padding(20.dp),
             text = "dodo",
@@ -26,16 +34,18 @@ fun HomeScreen() {
         val todoList = emptyList<Unit>() //TODO 테스트 용
         var selectDate by remember { mutableStateOf("") } // TODO 테스트 용
         HorizontalCalendar(
-            modifier = Modifier.padding(bottom = 20.dp),
             onSelectedDate = { date ->
                 selectDate = date.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
             }
         )
-
         if (todoList.isNotEmpty()) {
             HomeTodoListView()
         } else {
-            HomeTodoListEmptyView(modifier = Modifier.fillMaxSize())
+            HomeTodoListEmptyView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
         }
 
     }

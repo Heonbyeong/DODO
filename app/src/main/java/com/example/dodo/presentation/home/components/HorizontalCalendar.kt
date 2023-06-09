@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -127,9 +128,10 @@ fun CalendarMonthItem(
     Column(modifier = modifier) {
         DayOfWeek()
         LazyVerticalGrid(
+            modifier = Modifier.height(260.dp),
             columns = GridCells.Fixed(7)
         ) {
-            for (i in 0 until firstDayOfWeek) { // 처음 날짜가 시작하는 요일 전까지 빈 박스 생성
+            for (i in 1 until firstDayOfWeek) { // 처음 날짜가 시작하는 요일 전까지 빈 박스 생성
                 item {
                     Box(
                         modifier = Modifier
