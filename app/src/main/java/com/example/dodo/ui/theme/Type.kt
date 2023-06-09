@@ -40,6 +40,24 @@ val RegularN12 = TextStyle(
     )
 )
 
+val MediumN10 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Normal,
+    fontSize = 10.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+val MediumN12 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Normal,
+    fontSize = 12.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
 val BoldN12 = TextStyle(
     fontFamily = notosanskr,
     fontWeight = FontWeight.Bold,
