@@ -1,4 +1,4 @@
-package com.example.dodo.presentation.home.components
+package com.example.dodo.presentation.home.components.calendar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background

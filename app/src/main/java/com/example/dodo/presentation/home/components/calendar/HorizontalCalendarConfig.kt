@@ -1,4 +1,4 @@
-package com.example.dodo.presentation.home.components
+package com.example.dodo.presentation.home.components.calendar
 
 import java.util.Locale
 
