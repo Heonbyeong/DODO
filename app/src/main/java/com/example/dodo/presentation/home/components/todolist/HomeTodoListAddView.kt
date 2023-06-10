@@ -17,15 +17,20 @@ import com.example.dodo.R
 import com.example.dodo.ui.theme.MediumN12
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray09
+import com.example.dodo.util.noRippleClickable
 
 @Composable
 fun HomeTodoListAddView(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickAdd: () -> Unit
 ) {
     Box(
         modifier = modifier
             .clip(shape = RoundedCornerShape(30.dp))
-            .background(gray0),
+            .background(gray0)
+            .noRippleClickable {
+                onClickAdd()
+            },
         contentAlignment = Alignment.Center
     ) {
         Row(
