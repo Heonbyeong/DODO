@@ -86,6 +86,9 @@ dependencies {
 
     def timePicker_version = "1.1.11"
     implementation "com.github.commandiron:WheelPickerCompose:$timePicker_version"
+
+    def lottie_version = "6.0.1"
+    implementation "com.airbnb.android:lottie-compose:$lottie_version"
 }
 
 kapt {
