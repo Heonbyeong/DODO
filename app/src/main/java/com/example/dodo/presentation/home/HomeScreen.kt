@@ -18,13 +18,18 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
@@ -33,10 +38,11 @@ import com.example.dodo.presentation.home.components.todolist.HomeTodoListEmptyV
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListItem
 import com.example.dodo.ui.theme.RegularC32
 import com.example.dodo.ui.theme.gray09
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun HomeScreen() {
     val coroutineScope = rememberCoroutineScope()
@@ -45,8 +51,20 @@ fun HomeScreen() {
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
     BackHandler(sheetState.isVisible) {
         coroutineScope.launch { sheetState.hide() }
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { sheetState.currentValue }.collect {
+            if (it == ModalBottomSheetValue.Hidden) {
+                keyboardController?.hide()
+                focusManager.clearFocus()
+            }
+        }
     }
 
     ModalBottomSheetLayout(
