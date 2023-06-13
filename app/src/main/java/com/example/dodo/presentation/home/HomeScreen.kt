@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
+import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoDetailBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListEmptyView
@@ -68,7 +69,7 @@ fun HomeScreen() {
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { HomeTodoAddBottomSheet() },
+        sheetContent = { HomeTodoDetailBottomSheet() },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),

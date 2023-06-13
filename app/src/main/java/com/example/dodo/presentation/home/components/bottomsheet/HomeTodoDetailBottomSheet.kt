@@ -2,7 +2,9 @@ package com.example.dodo.presentation.home.components.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -82,13 +84,14 @@ fun HomeTodoDetailBottomSheet() {
             )
             Text(
                 modifier = Modifier
-                    .padding(top = 5.dp, bottom = 40.dp),
+                    .padding(top = 5.dp),
                 text = "26°C",
                 style = BoldN14,
                 color = gray0
             )
         }
         if (true) { // TODO 장소 일정일 경우
+            Spacer(modifier = Modifier.height(40.dp))
             HomeTodoDetailBottomSheetItem(
                 modifier = Modifier.padding(bottom = 20.dp),
                 color = gray0,
@@ -96,6 +99,8 @@ fun HomeTodoDetailBottomSheet() {
                 onClickItem = { /*TODO*/ },
                 onCheckedChange = null
             )
+        } else {
+            Spacer(modifier = Modifier.height(40.dp))
         }
         HomeTodoDetailBottomSheetItem(
             modifier = Modifier.padding(vertical = 10.dp),
