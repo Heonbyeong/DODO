@@ -31,6 +31,15 @@ val RegularC32 = TextStyle(
     )
 )
 
+val RegularN10 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Normal,
+    fontSize = 10.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
 val RegularN12 = TextStyle(
     fontFamily = notosanskr,
     fontWeight = FontWeight.Normal,
