@@ -50,7 +50,7 @@ fun HomeTodoLocationBottomSheet(
         ) {
             Icon(
                 modifier = Modifier.padding(13.dp),
-                painter = painterResource(id = R.drawable.ic_bottom_search),
+                painter = painterResource(id = R.drawable.ic_bottomsheet_search),
                 contentDescription = null,
                 tint = gray07
             )
