@@ -28,12 +28,15 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoDetailBottomSheet
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoLocationBottomSheet
+import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoMapBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListEmptyView
@@ -70,7 +73,7 @@ fun HomeScreen() {
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { HomeTodoLocationBottomSheet(modifier = Modifier.padding(20.dp)) },
+        sheetContent = { HomeTodoMapBottomSheet() },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
