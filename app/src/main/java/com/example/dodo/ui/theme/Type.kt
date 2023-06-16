@@ -31,6 +31,15 @@ val RegularC32 = TextStyle(
     )
 )
 
+val RegularN10 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Normal,
+    fontSize = 10.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
 val RegularN12 = TextStyle(
     fontFamily = notosanskr,
     fontWeight = FontWeight.Normal,
@@ -42,7 +51,7 @@ val RegularN12 = TextStyle(
 
 val MediumN10 = TextStyle(
     fontFamily = notosanskr,
-    fontWeight = FontWeight.Normal,
+    fontWeight = FontWeight.Medium,
     fontSize = 10.sp,
     platformStyle = PlatformTextStyle(
         includeFontPadding = false
@@ -51,17 +60,45 @@ val MediumN10 = TextStyle(
 
 val MediumN12 = TextStyle(
     fontFamily = notosanskr,
-    fontWeight = FontWeight.Normal,
+    fontWeight = FontWeight.Medium,
     fontSize = 12.sp,
     platformStyle = PlatformTextStyle(
         includeFontPadding = false
     )
 )
 
+val MediumN14 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Medium,
+    fontSize = 14.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+val BoldN10 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Bold,
+    fontSize = 10.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+
 val BoldN12 = TextStyle(
     fontFamily = notosanskr,
     fontWeight = FontWeight.Bold,
     fontSize = 12.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+val BoldN14 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Bold,
+    fontSize = 14.sp,
     platformStyle = PlatformTextStyle(
         includeFontPadding = false
     )
