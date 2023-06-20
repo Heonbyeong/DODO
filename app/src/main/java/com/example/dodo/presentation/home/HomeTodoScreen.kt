@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Text
@@ -28,14 +26,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoDetailBottomSheet
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoLocationBottomSheet
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoMapBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
@@ -43,7 +36,6 @@ import com.example.dodo.presentation.home.components.todolist.HomeTodoListEmptyV
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListItem
 import com.example.dodo.ui.theme.RegularC32
 import com.example.dodo.ui.theme.gray09
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
