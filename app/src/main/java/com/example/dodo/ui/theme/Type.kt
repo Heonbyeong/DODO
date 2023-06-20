@@ -104,6 +104,15 @@ val BoldN14 = TextStyle(
     )
 )
 
+val BoldN20 = TextStyle(
+    fontFamily = notosanskr,
+    fontWeight = FontWeight.Bold,
+    fontSize = 20.sp,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
 val BlackN10 = TextStyle(
     fontFamily = notosanskr,
     fontWeight = FontWeight.Black,

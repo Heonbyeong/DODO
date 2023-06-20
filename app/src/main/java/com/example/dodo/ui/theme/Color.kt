@@ -22,3 +22,4 @@ val gray08 = Color(0xFFEEEDF2)
 val gray09 = Color(0xFFFFFFFF)
 
 val red = Color(0xFFFF4848)
+val yellow = Color(0xFFFFB800)
