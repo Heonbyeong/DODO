@@ -29,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.dodo.presentation.home.HomeTodoViewModel
 import com.example.dodo.ui.theme.BlackN12
 import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.gray0
@@ -38,9 +40,9 @@ import com.example.dodo.ui.theme.gray09
 import com.example.dodo.util.conditional
 import com.example.dodo.util.dateFormat
 import com.example.dodo.util.noRippleClickable
+import org.orbitmvi.orbit.compose.collectAsState
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -48,14 +50,13 @@ import java.util.Locale
 @Composable
 fun HorizontalCalendar(
     modifier: Modifier = Modifier,
-    currentDate: LocalDate = LocalDate.now(),
     config: HorizontalCalendarConfig = HorizontalCalendarConfig(),
-    onSelectedDate: (LocalDate) -> Unit
+    viewModel: HomeTodoViewModel = hiltViewModel()
 ) {
+    val state = viewModel.collectAsState().value
     //page는 0부터 시작하기 때문에 getMonthValue - 1을 해줘야 함
-    val initialPage = (currentDate.year - config.yearRange.first) * 12 + currentDate.monthValue - 1
-    var currentSelectedDate by remember { mutableStateOf(currentDate) }
-    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
+    val initialPage = (state.selectedDate.year - config.yearRange.first) * 12 + state.selectedDate.monthValue - 1
+    var currentMonth by remember { mutableStateOf(state.selectedDate) }
     var currentPage by remember { mutableStateOf(initialPage) }
     val pagerState = rememberPagerState(initialPage = initialPage)
 
@@ -63,10 +64,6 @@ fun HorizontalCalendar(
         val addMonth = (pagerState.currentPage - currentPage).toLong()
         currentMonth = currentMonth.plusMonths(addMonth)
         currentPage = pagerState.currentPage
-    }
-
-    LaunchedEffect(currentSelectedDate) {
-        onSelectedDate(currentSelectedDate)
     }
 
     Column(modifier = modifier) {
@@ -91,10 +88,8 @@ fun HorizontalCalendar(
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
                     currentDate = date,
-                    selectedDate = currentSelectedDate,
-                    onSelectedDate = { date ->
-                        currentSelectedDate = date
-                    }
+                    selectedDate = state.selectedDate,
+                    onSelectedDate = viewModel::onChangeDate
                 )
             }
         }
@@ -163,9 +158,9 @@ fun CalendarDay(
     date: LocalDate,
     isToday: Boolean,
     isSelected: Boolean,
+    hasEvent: Boolean = false,
     onSelectedDate: (LocalDate) -> Unit
 ) {
-    val hasEvent = false // TODO
     Column(
         modifier = modifier
             .wrapContentSize()
