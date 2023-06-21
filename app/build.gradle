@@ -81,6 +81,8 @@ dependencies {
     def hilt_version = "2.44"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    def hilt_navigation_version = "1.0.0"
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_version"
 
     def orbit_version = "6.0.0"
     implementation "org.orbit-mvi:orbit-core:$orbit_version"

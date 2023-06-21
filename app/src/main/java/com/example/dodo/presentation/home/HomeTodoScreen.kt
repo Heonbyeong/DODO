@@ -6,36 +6,26 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoDetailBottomSheet
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoLocationBottomSheet
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoMapBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
@@ -43,13 +33,15 @@ import com.example.dodo.presentation.home.components.todolist.HomeTodoListEmptyV
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListItem
 import com.example.dodo.ui.theme.RegularC32
 import com.example.dodo.ui.theme.gray09
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.time.format.DateTimeFormatter
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    viewModel: HomeTodoViewModel = hiltViewModel()
+) {
+    val state = viewModel.collectAsState().value
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -89,12 +81,7 @@ fun HomeScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
-                    var selectDate by remember { mutableStateOf("") } // TODO 테스트 용
-                    HorizontalCalendar(
-                        onSelectedDate = { date ->
-                            selectDate = date.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
-                        }
-                    )
+                    HorizontalCalendar()
                 }
                 val todoList = listOf<Int>(1, 2, 3, 4, 5) // TODO 테스트 용
                 if (todoList.isNotEmpty()) {
