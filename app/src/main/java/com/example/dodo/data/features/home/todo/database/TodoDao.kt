@@ -22,9 +22,6 @@ interface TodoDao {
     @Delete
     suspend fun deleteTodo(todo: Todo)
 
-    @Query("DELETE FROM todoList WHERE id = :id")
-    suspend fun deleteTodo(id: Long)
-
     @Query("UPDATE todoList SET isDone = :isDone WHERE id = :id")
     suspend fun doneTodo(id: Long, isDone: Boolean = true)
 
