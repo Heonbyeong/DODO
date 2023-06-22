@@ -1,5 +1,6 @@
 package com.example.dodo.data.features.home.todo.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
@@ -7,15 +8,15 @@ import java.time.LocalTime
 
 @Entity(tableName = "todoList")
 data class Todo(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val title: String,
     val location: String?,
     val date: LocalDate,
     val time: LocalTime?,
-    val latitude: Float?,
-    val longitude: Float?,
+    val lat: Float?,
+    val lng: Float?,
     val isNotify: Boolean,
     val isDone: Boolean
 ) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
 }
