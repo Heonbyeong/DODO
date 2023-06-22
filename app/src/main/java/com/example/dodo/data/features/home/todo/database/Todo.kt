@@ -1,6 +1,5 @@
 package com.example.dodo.data.features.home.todo.database
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
