@@ -1,6 +1,6 @@
 package com.example.dodo.di.datasource
 
-import com.example.dodo.data.features.home.todo.datasource.TodoLocalDataSource
+import com.example.dodo.domain.features.home.todo.datasource.TodoLocalDataSource
 import com.example.dodo.data.features.home.todo.datasource.TodoLocalDataSourceImpl
 import dagger.Binds
 import dagger.Module

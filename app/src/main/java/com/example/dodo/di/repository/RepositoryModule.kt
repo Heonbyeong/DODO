@@ -1,6 +1,6 @@
 package com.example.dodo.di.repository
 
-import com.example.dodo.data.features.home.todo.repository.TodoRepository
+import com.example.dodo.domain.features.home.todo.repository.TodoRepository
 import com.example.dodo.data.features.home.todo.repository.TodoRepositoryImpl
 import dagger.Binds
 import dagger.Module
