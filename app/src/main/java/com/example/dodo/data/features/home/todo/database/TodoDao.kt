@@ -23,11 +23,11 @@ interface TodoDao {
     suspend fun deleteTodo(todo: Todo)
 
     @Query("UPDATE todoList SET isDone = :isDone WHERE id = :id")
-    suspend fun doneTodo(id: Long, isDone: Boolean = true)
+    suspend fun doneTodo(id: Int, isDone: Boolean)
 
     @Query("UPDATE todoList SET isNotify = :isNotify WHERE id = :id")
-    suspend fun notifyChange(id: Long, isNotify: Boolean = false)
+    suspend fun notifyChange(id: Int, isNotify: Boolean)
 
     @Query("SELECT * FROM todoList WHERE id = :id")
-    suspend fun fetchTodoDetail(id: Long)
+    suspend fun fetchTodoDetail(id: Int): Todo
 }

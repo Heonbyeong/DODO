@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoMapBottomSheet
+import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListEmptyView
@@ -42,12 +42,13 @@ fun HomeScreen(
     viewModel: HomeTodoViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
-    val coroutineScope = rememberCoroutineScope()
+    val sideEffect = viewModel.container.sideEffectFlow
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
-        skipHalfExpanded = true
+        skipHalfExpanded = false
     )
+    val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
@@ -64,8 +65,26 @@ fun HomeScreen(
         }
     }
 
+    LaunchedEffect(sideEffect) {
+        sideEffect.collect {
+            when (it) {
+                else -> {}
+            }
+        }
+    }
+
+//    LaunchedEffect(sheetState.isVisible) {
+//        if (state.expanded && sheetState.isVisible) sheetState.animateTo(ModalBottomSheetValue.Expanded)
+//        else if (!state.expanded && !sheetState.isVisible) sheetState.animateTo(ModalBottomSheetValue.HalfExpanded)
+//    }
+
     ModalBottomSheetLayout(
-        sheetContent = { HomeTodoMapBottomSheet() },
+        sheetContent = {
+            HomeTodoAddBottomSheet(
+                parentSheetState = sheetState,
+                viewModel = viewModel
+            )
+        },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
@@ -91,7 +110,7 @@ fun HomeScreen(
                     item {
                         HomeTodoListAddView(
                             modifier = Modifier.padding(top = 20.dp),
-                            onClickAdd = { coroutineScope.launch { sheetState.show() } }
+                            onClickAdd = { coroutineScope.launch { sheetState.show() }}
                         )
                         Spacer(modifier = Modifier.height(75.dp))
                     }

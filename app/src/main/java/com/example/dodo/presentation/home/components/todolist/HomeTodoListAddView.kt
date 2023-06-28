@@ -13,7 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dodo.R
+import com.example.dodo.presentation.home.HomeTodoViewModel
+import com.example.dodo.presentation.home.components.bottomsheet.BottomSheetType
 import com.example.dodo.ui.theme.MediumN12
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray09
@@ -22,14 +25,14 @@ import com.example.dodo.util.noRippleClickable
 @Composable
 fun HomeTodoListAddView(
     modifier: Modifier = Modifier,
-    onClickAdd: () -> Unit
+    onClickAdd: (BottomSheetType) -> Unit
 ) {
     Box(
         modifier = modifier
             .clip(shape = RoundedCornerShape(30.dp))
             .background(gray0)
             .noRippleClickable {
-                onClickAdd()
+                onClickAdd(BottomSheetType.HOME_TODO_ADD)
             },
         contentAlignment = Alignment.Center
     ) {
