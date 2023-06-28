@@ -35,8 +35,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dodo.R
 import com.example.dodo.presentation.common.BottomSheetButton
+import com.example.dodo.presentation.home.HomeTodoViewModel
 import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.RegularN12
 import com.example.dodo.ui.theme.gray0
@@ -52,6 +54,7 @@ import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(
     ExperimentalNaverMapApi::class, ExperimentalComposeUiApi::class,
@@ -59,8 +62,10 @@ import kotlinx.coroutines.launch
 )
 @Composable
 fun HomeTodoMapBottomSheet(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeTodoViewModel = hiltViewModel(),
 ) {
+    val state = viewModel.collectAsState().value
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
