@@ -19,7 +19,7 @@ import com.example.dodo.ui.theme.gray09
 fun BottomNavigation(navController: NavController) {
     val items = listOf(
         Screen.HomeScreen,
-        Screen.NotificationScreen,
+        Screen.Notification,
         Screen.SettingScreen
     )
 

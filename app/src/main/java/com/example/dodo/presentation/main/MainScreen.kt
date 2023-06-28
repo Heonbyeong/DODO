@@ -12,16 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.dodo.presentation.Navigation
 
 @Composable
-fun MainScreen() {
-    val navController = rememberNavController()
+fun MainScreen(navController: NavController) {
+    val navHostController = rememberNavController()
     Scaffold(
         bottomBar = {
             CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
-                BottomNavigation(navController = navController)
+                BottomNavigation(navController = navHostController)
             }
         },
         content = { padding ->
@@ -31,7 +32,10 @@ fun MainScreen() {
                     .padding(padding)
             ) {
                 Box(modifier = Modifier) {
-                    Navigation(navController = navController)
+                    Navigation(
+                        navHostController = navHostController,
+                        navController = navController
+                    )
                 }
             }
         }

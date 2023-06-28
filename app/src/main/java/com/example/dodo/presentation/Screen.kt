@@ -9,9 +9,9 @@ sealed class Screen(val title: Int, val icon: Int, val route: String) {
         route = ScreenRoute.HOME.name
     )
 
-    object NotificationScreen : Screen(
-        title = R.string.bottom_nav_notification,
-        icon = R.drawable.ic_bottomsheet_notification,
+    object Notification : Screen(
+        title = R.string.bottom_nav_add,
+        icon = R.drawable.ic_bottom_add,
         route = ScreenRoute.NOTIFICATION.name
     )
 

@@ -21,7 +21,7 @@ import com.example.dodo.ui.theme.gray08
 
 @Composable
 fun SettingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val version = remember { mutableStateOf("1.0.0") } // TODO
     Column(modifier = modifier.fillMaxSize()) {
