@@ -27,7 +27,7 @@ import com.example.dodo.util.noRippleClickable
 
 enum class ItemType(val icon: Int, val text: String) {
     EDIT(icon = R.drawable.ic_bottomsheet_edit, text = "수정하기"),
-    NOTIFY(icon = R.drawable.ic_bottomsheet_notify, text = "알림설정"),
+    NOTIFY(icon = R.drawable.ic_bottom_notify, text = "알림설정"),
     DELETE(icon = R.drawable.ic_bottomsheet_delete, text = "삭제하기"),
     NAVIGATION(icon = R.drawable.ic_bottomsheet_navigation, text = "지도에서 길찾기")
 }
