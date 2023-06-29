@@ -2,7 +2,7 @@ package com.example.dodo.presentation.todoadd.components.view
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.dodo.presentation.base.BottomSheetScreen
+import com.example.dodo.presentation.common.BottomSheetScreen
 import com.example.dodo.presentation.todoadd.TodoAddViewModel
 import com.example.dodo.presentation.todoadd.components.bottomsheet.TodoAddMapBottomSheet
 import com.example.dodo.presentation.todoadd.components.bottomsheet.TodoAddTimeSelectBottomSheet

@@ -1,4 +1,4 @@
-package com.example.dodo.presentation.base
+package com.example.dodo.presentation.common
 
 sealed class BottomSheetScreen() {
     object TodoAddMapBottomSheet : BottomSheetScreen()
