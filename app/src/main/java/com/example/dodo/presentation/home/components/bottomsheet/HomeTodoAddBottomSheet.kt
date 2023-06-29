@@ -39,6 +39,7 @@ import com.commandiron.wheel_picker_compose.core.WheelPickerDefaults
 import com.example.dodo.R
 import com.example.dodo.presentation.common.BottomSheetButton
 import com.example.dodo.presentation.home.HomeTodoViewModel
+import com.example.dodo.presentation.todoadd.components.bottomsheet.TodoAddMapBottomSheet
 import com.example.dodo.ui.theme.BoldN14
 import com.example.dodo.ui.theme.MediumN12
 import com.example.dodo.ui.theme.MediumN14
@@ -87,7 +88,7 @@ fun HomeTodoAddBottomSheet(
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { HomeTodoMapBottomSheet() },
+        sheetContent = { TodoAddMapBottomSheet() },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),

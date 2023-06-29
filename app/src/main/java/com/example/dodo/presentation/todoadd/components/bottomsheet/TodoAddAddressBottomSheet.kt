@@ -1,4 +1,4 @@
-package com.example.dodo.presentation.home.components.bottomsheet
+package com.example.dodo.presentation.todoadd.components.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -34,7 +34,7 @@ import com.example.dodo.ui.theme.gray07
 import com.example.dodo.ui.theme.gray08
 
 @Composable
-fun HomeTodoLocationBottomSheet(
+fun TodoAddAddressBottomSheet(
     modifier: Modifier = Modifier
 ) { // TODO 이름 변경 가능성 있음
     var location by remember { mutableStateOf("") }
