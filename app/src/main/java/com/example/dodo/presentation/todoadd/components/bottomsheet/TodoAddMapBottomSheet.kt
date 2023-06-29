@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dodo.R
 import com.example.dodo.presentation.common.BottomSheetButton
-import com.example.dodo.presentation.home.HomeTodoViewModel
+import com.example.dodo.presentation.todoadd.TodoAddViewModel
 import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.RegularN12
 import com.example.dodo.ui.theme.gray0
@@ -63,7 +63,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun TodoAddMapBottomSheet(
     modifier: Modifier = Modifier,
-    viewModel: HomeTodoViewModel = hiltViewModel(),
+    viewModel: TodoAddViewModel = hiltViewModel(),
 ) {
     val state = viewModel.collectAsState().value
     val coroutineScope = rememberCoroutineScope()
