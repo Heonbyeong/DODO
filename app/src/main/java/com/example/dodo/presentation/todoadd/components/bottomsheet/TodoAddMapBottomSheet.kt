@@ -1,4 +1,4 @@
-package com.example.dodo.presentation.home.components.bottomsheet
+package com.example.dodo.presentation.todoadd.components.bottomsheet
 
 import android.graphics.PointF
 import androidx.activity.compose.BackHandler
@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dodo.R
 import com.example.dodo.presentation.common.BottomSheetButton
-import com.example.dodo.presentation.home.HomeTodoViewModel
+import com.example.dodo.presentation.todoadd.TodoAddViewModel
 import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.RegularN12
 import com.example.dodo.ui.theme.gray0
@@ -61,9 +61,9 @@ import org.orbitmvi.orbit.compose.collectAsState
     ExperimentalMaterialApi::class
 )
 @Composable
-fun HomeTodoMapBottomSheet(
+fun TodoAddMapBottomSheet(
     modifier: Modifier = Modifier,
-    viewModel: HomeTodoViewModel = hiltViewModel(),
+    viewModel: TodoAddViewModel = hiltViewModel(),
 ) {
     val state = viewModel.collectAsState().value
     val coroutineScope = rememberCoroutineScope()
@@ -96,7 +96,7 @@ fun HomeTodoMapBottomSheet(
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { HomeTodoLocationBottomSheet(modifier = Modifier.padding(20.dp)) },
+        sheetContent = { TodoAddAddressBottomSheet(modifier = Modifier.padding(20.dp)) },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),

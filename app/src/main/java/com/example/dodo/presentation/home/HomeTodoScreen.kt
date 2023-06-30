@@ -26,6 +26,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.dodo.presentation.ScreenRoute
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
@@ -38,8 +40,9 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
-fun HomeScreen(
-    viewModel: HomeTodoViewModel = hiltViewModel()
+fun HomeTodoScreen(
+    viewModel: HomeTodoViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val state = viewModel.collectAsState().value
     val sideEffect = viewModel.container.sideEffectFlow
@@ -110,7 +113,7 @@ fun HomeScreen(
                     item {
                         HomeTodoListAddView(
                             modifier = Modifier.padding(top = 20.dp),
-                            onClickAdd = { coroutineScope.launch { sheetState.show() }}
+                            onClickAdd = { navController.navigate(ScreenRoute.ADD.name) }
                         )
                         Spacer(modifier = Modifier.height(75.dp))
                     }
