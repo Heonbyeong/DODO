@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
     private const val NAVER_BASE_URL = "https://naveropenapi.apigw.ntruss.com"
+    private const val JUSO_BASE_URL = "https://business.juso.go.kr"
 
     @Provides
     @Singleton
@@ -32,10 +34,21 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit =
+    @Named("Map")
+    fun provideRetrofitMap(okHttpClient: OkHttpClient, gson: Gson): Retrofit =
         Retrofit.Builder().apply {
             client(okHttpClient)
             baseUrl(NAVER_BASE_URL)
+            addConverterFactory(GsonConverterFactory.create(gson))
+        }.build()
+
+    @Provides
+    @Singleton
+    @Named("Juso")
+    fun provideRetrofitJuso(okHttpClient: OkHttpClient, gson: Gson): Retrofit =
+        Retrofit.Builder().apply {
+            client(okHttpClient)
+            baseUrl(JUSO_BASE_URL)
             addConverterFactory(GsonConverterFactory.create(gson))
         }.build()
 
