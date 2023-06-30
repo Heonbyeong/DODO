@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dodo.presentation.ScreenRoute
+import com.example.dodo.presentation.common.NavAnimation
 import com.example.dodo.presentation.todoadd.TodoAddScreen
 
 @Composable
@@ -16,10 +17,14 @@ fun Dodo(
         startDestination = ScreenRoute.MAIN.name
     ) {
         composable(ScreenRoute.MAIN.name) {
-            MainScreen(navController = navController)
+            NavAnimation {
+                MainScreen(navController = navController)
+            }
         }
         composable(ScreenRoute.ADD.name) {
-            TodoAddScreen()
+            NavAnimation {
+                TodoAddScreen(navController = navController)
+            }
         }
     }
 }

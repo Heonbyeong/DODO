@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.dodo.R
 import com.example.dodo.presentation.todoadd.components.view.TodoAddItem
 import com.example.dodo.presentation.todoadd.components.view.TodoAddSheetLayout
@@ -60,6 +61,7 @@ import java.time.LocalDate
 @Composable
 fun TodoAddScreen(
     modifier: Modifier = Modifier,
+    navController: NavController,
     viewModel: TodoAddViewModel = hiltViewModel(),
     date: LocalDate = LocalDate.now(),
     isEdit: Boolean = false
@@ -126,7 +128,10 @@ fun TodoAddScreen(
                 Icon(
                     modifier = Modifier
                         .padding(20.dp)
-                        .align(Alignment.CenterStart),
+                        .align(Alignment.CenterStart)
+                        .noRippleClickable {
+                            navController.popBackStack()
+                        },
                     painter = painterResource(id = R.drawable.ic_left_arrow),
                     contentDescription = null,
                     tint = gray0
