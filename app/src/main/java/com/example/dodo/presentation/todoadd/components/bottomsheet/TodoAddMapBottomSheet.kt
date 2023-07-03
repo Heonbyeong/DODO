@@ -75,8 +75,7 @@ fun TodoAddMapBottomSheet(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val cameraPositionState = rememberCameraPositionState()
-    var buttonEnabled by remember { mutableStateOf(true) }
-
+    var isMoving by remember { mutableStateOf(false) }
 
     BackHandler(sheetState.isVisible) {
         coroutineScope.launch { sheetState.hide() }
@@ -91,8 +90,10 @@ fun TodoAddMapBottomSheet(
         }
     }
 
-    LaunchedEffect(cameraPositionState.isMoving) {
-        buttonEnabled = !cameraPositionState.isMoving  // TODO 한 손으로 화면 이동시 isMoving이 계속 true 버그 발생
+    LaunchedEffect(isMoving) {
+        if (!isMoving) {
+            viewModel.reverseGeocoding(cameraPositionState.position.target)
+        }
     }
 
     ModalBottomSheetLayout(
@@ -107,7 +108,12 @@ fun TodoAddMapBottomSheet(
                     modifier = Modifier
                         .fillMaxSize()
                         .pointerInput(Unit) {
-                            detectDragGestures { _, dragAmount ->
+                            detectDragGestures(
+                                onDragEnd = {
+                                    isMoving = false
+                                }
+                            ) { _, dragAmount ->
+                                if (!isMoving) isMoving = true
                                 cameraPositionState.move(
                                     scrollBy(
                                         PointF(
@@ -166,7 +172,7 @@ fun TodoAddMapBottomSheet(
             ) {
                 Text(
                     modifier = Modifier.padding(top = 20.dp),
-                    text = "[도로명] 서울 중구 세종대로 110 서울특별시청", // TODO
+                    text = "[도로명] ${state.newAddress}", // TODO
                     style = BoldN12,
                     color = gray0
                 )
@@ -179,7 +185,7 @@ fun TodoAddMapBottomSheet(
                 BottomSheetButton(
                     modifier = Modifier.padding(20.dp),
                     text = "여기를 도착지로 설정할게요",
-                    enabled = buttonEnabled,
+                    enabled = !isMoving,
                     onClick = { /* TODO */ },
                 )
             }
