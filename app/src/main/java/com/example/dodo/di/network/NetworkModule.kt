@@ -1,5 +1,6 @@
 package com.example.dodo.di.network
 
+import com.example.dodo.data.features.home.todoadd.remote.api.JusoApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -58,4 +59,8 @@ object NetworkModule {
         GsonBuilder()
             .setLenient()
             .create()
+
+    @Provides
+    fun provideJusoApi(@Named("Juso") retrofit: Retrofit) : JusoApi =
+        retrofit.create(JusoApi::class.java)
 }

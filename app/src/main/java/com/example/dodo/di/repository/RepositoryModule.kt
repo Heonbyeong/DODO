@@ -2,6 +2,8 @@ package com.example.dodo.di.repository
 
 import com.example.dodo.domain.features.home.todo.repository.TodoRepository
 import com.example.dodo.data.features.home.todo.repository.TodoRepositoryImpl
+import com.example.dodo.data.features.home.todoadd.repository.TodoAddRepositoryImpl
+import com.example.dodo.domain.features.home.todoadd.repository.TodoAddRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun provideTodoRepository(
         todoRepositoryImpl: TodoRepositoryImpl
     ): TodoRepository
+
+    @Singleton
+    @Binds
+    abstract fun provideTodoAddRepository(
+        todoAddRepositoryImpl: TodoAddRepositoryImpl
+    ): TodoAddRepository
 }
