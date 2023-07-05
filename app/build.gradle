@@ -13,6 +13,10 @@ android {
     namespace 'com.example.dodo'
     compileSdk 33
 
+    buildFeatures {
+        buildConfig true
+    }
+
     defaultConfig {
         applicationId "com.example.dodo"
         minSdk 26
@@ -26,6 +30,7 @@ android {
         }
 
         manifestPlaceholders = [NAVER_CLIENT_ID: naver_client_id]
+        buildConfigField "String", "ADDRESS_API_KEY", properties['address_api_key']
     }
 
     buildTypes {
