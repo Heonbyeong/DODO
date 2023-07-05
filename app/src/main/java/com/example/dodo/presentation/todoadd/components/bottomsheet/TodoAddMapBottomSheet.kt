@@ -48,10 +48,14 @@ import com.example.dodo.util.noRippleClickable
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate.scrollBy
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.LocationTrackingMode
+import com.naver.maps.map.compose.MapProperties
+import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
+import com.naver.maps.map.compose.rememberFusedLocationSource
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -75,8 +79,14 @@ fun TodoAddMapBottomSheet(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val cameraPositionState = rememberCameraPositionState()
-    var buttonEnabled by remember { mutableStateOf(true) }
-
+    val locationSource = rememberFusedLocationSource()
+    var isMoving by remember { mutableStateOf(false) }
+    var mapProperties by remember {
+        mutableStateOf(MapProperties(locationTrackingMode = LocationTrackingMode.NoFollow))
+    }
+    var mapUiSettings by remember {
+        mutableStateOf(MapUiSettings(isLocationButtonEnabled = true))
+    }
 
     BackHandler(sheetState.isVisible) {
         coroutineScope.launch { sheetState.hide() }
@@ -91,8 +101,10 @@ fun TodoAddMapBottomSheet(
         }
     }
 
-    LaunchedEffect(cameraPositionState.isMoving) {
-        buttonEnabled = !cameraPositionState.isMoving  // TODO 한 손으로 화면 이동시 isMoving이 계속 true 버그 발생
+    LaunchedEffect(isMoving) {
+        if (!isMoving) {
+            viewModel.reverseGeocoding(cameraPositionState.position.target)
+        }
     }
 
     ModalBottomSheetLayout(
@@ -107,7 +119,12 @@ fun TodoAddMapBottomSheet(
                     modifier = Modifier
                         .fillMaxSize()
                         .pointerInput(Unit) {
-                            detectDragGestures { _, dragAmount ->
+                            detectDragGestures(
+                                onDragEnd = {
+                                    isMoving = false
+                                }
+                            ) { _, dragAmount ->
+                                if (!isMoving) isMoving = true
                                 cameraPositionState.move(
                                     scrollBy(
                                         PointF(
@@ -118,7 +135,10 @@ fun TodoAddMapBottomSheet(
                                 )
                             }
                         },
-                    cameraPositionState = cameraPositionState
+                    properties = mapProperties,
+                    uiSettings = mapUiSettings,
+                    cameraPositionState = cameraPositionState,
+                    locationSource = locationSource
                 ) {
                     Marker(
                         state = MarkerState(
@@ -165,21 +185,23 @@ fun TodoAddMapBottomSheet(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    modifier = Modifier.padding(top = 20.dp),
-                    text = "[도로명] 서울 중구 세종대로 110 서울특별시청", // TODO
+                    modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                    text = "[도로명] ${state.newAddress}",
                     style = BoldN12,
                     color = gray0
                 )
-                Text(
-                    modifier = Modifier.padding(top = 5.dp),
-                    text = "[지번] 태평로1가 31", // TODO
-                    style = RegularN12,
-                    color = gray0
-                )
+                if (state.hasOldAddress) {
+                    Text(
+                        modifier = Modifier.padding(top = 5.dp),
+                        text = "[지번] ${state.oldAddress}", // TODO
+                        style = RegularN12,
+                        color = gray0
+                    )
+                }
                 BottomSheetButton(
                     modifier = Modifier.padding(20.dp),
                     text = "여기를 도착지로 설정할게요",
-                    enabled = buttonEnabled,
+                    enabled = !isMoving,
                     onClick = { /* TODO */ },
                 )
             }
