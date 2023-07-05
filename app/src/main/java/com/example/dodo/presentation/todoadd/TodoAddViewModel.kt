@@ -42,6 +42,12 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
+    fun changeAddressText(text: String) = intent {
+        reduce {
+            state.copy(addressText = text)
+        }
+    }
+
     fun onClickMap() = intent {
         reduce {
             state.copy(currentSheet = BottomSheetScreen.TodoAddMapBottomSheet)

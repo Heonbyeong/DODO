@@ -7,6 +7,7 @@ data class TodoAddState(
     val currentSheet: BottomSheetScreen = BottomSheetScreen.TodoAddMapBottomSheet,
     val longitude: Double = 0.0,
     val latitude: Double = 0.0,
+    val addressText: String = "",
     val newAddress: String = "",
     val oldAddress: String = ""
 ) : State {
