@@ -1,4 +1,4 @@
-package com.example.dodo.domain.features.home.todo.repository
+package com.example.dodo.domain.repository.todo
 
 import com.example.dodo.data.features.home.todo.database.Todo
 

@@ -14,17 +14,15 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dodo.R
+import com.example.dodo.presentation.todoadd.TodoAddViewModel
 import com.example.dodo.ui.theme.BoldN10
 import com.example.dodo.ui.theme.RegularN10
 import com.example.dodo.ui.theme.RegularN12
@@ -32,12 +30,14 @@ import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray04
 import com.example.dodo.ui.theme.gray07
 import com.example.dodo.ui.theme.gray08
+import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun TodoAddAddressBottomSheet(
-    modifier: Modifier = Modifier
-) { // TODO 이름 변경 가능성 있음
-    var location by remember { mutableStateOf("") }
+    modifier: Modifier = Modifier,
+    viewModel: TodoAddViewModel = hiltViewModel()
+) {
+    val state = viewModel.collectAsState().value
     val list = listOf<Int>(1, 2, 3, 4, 5, 6, 7, 8) // TODO
 
     Column(modifier = modifier) {
@@ -54,14 +54,15 @@ fun TodoAddAddressBottomSheet(
                 contentDescription = null,
                 tint = gray07
             )
+            val addressText = state.addressText
             BasicTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = location,
-                onValueChange = { location = it },
+                value = addressText,
+                onValueChange = { viewModel.changeAddressText(it) },
                 singleLine = true,
                 textStyle = RegularN12,
                 decorationBox = { innerTextField ->
-                    if (location.isEmpty()) {
+                    if (addressText.isEmpty()) {
                         Text(
                             text = "장소·건물·주소를 검색해주세요",
                             style = RegularN12,

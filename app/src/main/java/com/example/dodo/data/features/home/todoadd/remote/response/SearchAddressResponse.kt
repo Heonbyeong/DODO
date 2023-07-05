@@ -1,7 +1,7 @@
 package com.example.dodo.data.features.home.todoadd.remote.response
 
-import com.example.dodo.domain.features.home.todoadd.entity.SearchAddressEntity
-import com.example.dodo.domain.features.home.todoadd.entity.SearchAddressEntity.*
+import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
+import com.example.dodo.domain.entity.todoadd.SearchAddressEntity.*
 
 data class SearchAddressResponse(
     val common: Common,

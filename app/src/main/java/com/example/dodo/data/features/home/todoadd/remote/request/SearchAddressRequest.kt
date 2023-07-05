@@ -1,6 +1,6 @@
 package com.example.dodo.data.features.home.todoadd.remote.request
 
-import com.example.dodo.domain.features.home.todoadd.SearchAddressParam
+import com.example.dodo.domain.param.todoadd.SearchAddressParam
 
 data class SearchAddressRequest(
     val confirmKey: String,

@@ -1,4 +1,4 @@
-package com.example.dodo.domain.features.home.todoadd.entity
+package com.example.dodo.domain.entity.todoadd
 
 data class SearchAddressEntity(
     val common: Common,
