@@ -1,7 +1,7 @@
 package com.example.dodo.data.features.home.todo.repository
 
 import com.example.dodo.data.features.home.todo.database.Todo
-import com.example.dodo.domain.features.home.todo.datasource.TodoLocalDataSource
+import com.example.dodo.data.features.home.todo.datasource.TodoLocalDataSource
 import com.example.dodo.domain.features.home.todo.repository.TodoRepository
 import javax.inject.Inject
 

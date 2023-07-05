@@ -2,7 +2,6 @@ package com.example.dodo.data.features.home.todo.datasource
 
 import com.example.dodo.data.features.home.todo.database.Todo
 import com.example.dodo.data.features.home.todo.database.TodoDao
-import com.example.dodo.domain.features.home.todo.datasource.TodoLocalDataSource
 import javax.inject.Inject
 
 class TodoLocalDataSourceImpl @Inject constructor(
