@@ -11,4 +11,5 @@ data class TodoAddState(
     val oldAddress: String = ""
 ) : State {
 
+    val hasOldAddress = oldAddress.isNotEmpty()
 }
