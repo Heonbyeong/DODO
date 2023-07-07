@@ -88,6 +88,14 @@ fun TodoAddMapBottomSheet(
         mutableStateOf(MapUiSettings(isLocationButtonEnabled = true))
     }
 
+    val closeSheet: () -> Unit = {
+        coroutineScope.launch { sheetState.hide() }
+    }
+
+    val openSheet: () -> Unit = {
+        coroutineScope.launch { sheetState.show() }
+    }
+
     BackHandler(sheetState.isVisible) {
         coroutineScope.launch { sheetState.hide() }
     }
@@ -108,7 +116,12 @@ fun TodoAddMapBottomSheet(
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { TodoAddAddressBottomSheet(modifier = Modifier.padding(20.dp)) },
+        sheetContent = {
+            TodoAddAddressBottomSheet(
+                modifier = Modifier.padding(20.dp),
+                closeSheet = closeSheet
+            )
+        },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),

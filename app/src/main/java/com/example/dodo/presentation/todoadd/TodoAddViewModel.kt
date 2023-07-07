@@ -55,7 +55,8 @@ class TodoAddViewModel @Inject constructor(
                 intent {
                     reduce {
                         state.copy(
-                            newAddress = it.getAddressLine(0).removePrefix("대한민국")
+                            newAddress = it.getAddressLine(0).removePrefix("대한민국"),
+                            oldAddress = ""
                         )
                     }
                 }
@@ -78,6 +79,15 @@ class TodoAddViewModel @Inject constructor(
     fun onClickTimeSelector() = intent {
         reduce {
             state.copy(currentSheet = BottomSheetScreen.TodoAddTimeSelectBottomSheet)
+        }
+    }
+
+    fun onClickAddressItem(juso: SearchAddressEntity.JusoEntity) = intent {
+        reduce {
+            state.copy(
+                newAddress = juso.roadAddr,
+                oldAddress = juso.jibunAddr
+            )
         }
     }
 

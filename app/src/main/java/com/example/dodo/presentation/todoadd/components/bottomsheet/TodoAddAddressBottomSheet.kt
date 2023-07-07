@@ -1,6 +1,7 @@
 package com.example.dodo.presentation.todoadd.components.bottomsheet
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,7 +48,8 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun TodoAddAddressBottomSheet(
     modifier: Modifier = Modifier,
-    viewModel: TodoAddViewModel = hiltViewModel()
+    viewModel: TodoAddViewModel = hiltViewModel(),
+    closeSheet: () -> Unit
 ) {
     val state = viewModel.collectAsState().value
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -111,9 +113,11 @@ fun TodoAddAddressBottomSheet(
                     .height(300.dp)
             ) {
                 itemsIndexed(items = state.jusoList) { index, item ->
-                    LocationItem(
+                    AddressItem(
                         modifier = Modifier.fillMaxWidth(),
-                        juso = item
+                        juso = item,
+                        onClickAddressItem = viewModel::onClickAddressItem,
+                        closeSheet = closeSheet
                     )
                 }
             }
@@ -122,12 +126,17 @@ fun TodoAddAddressBottomSheet(
 }
 
 @Composable
-fun LocationItem(
+fun AddressItem(
     modifier: Modifier = Modifier,
-    juso: SearchAddressEntity.JusoEntity
+    juso: SearchAddressEntity.JusoEntity,
+    onClickAddressItem: (SearchAddressEntity.JusoEntity) -> Unit,
+    closeSheet: () -> Unit
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.clickable {
+            onClickAddressItem(juso)
+            closeSheet()
+        },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
