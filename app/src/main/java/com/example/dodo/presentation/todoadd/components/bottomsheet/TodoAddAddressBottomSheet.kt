@@ -1,6 +1,7 @@
 package com.example.dodo.presentation.todoadd.components.bottomsheet
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,8 +22,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,16 +43,23 @@ import com.example.dodo.ui.theme.gray07
 import com.example.dodo.ui.theme.gray08
 import org.orbitmvi.orbit.compose.collectAsState
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TodoAddAddressBottomSheet(
     modifier: Modifier = Modifier,
     viewModel: TodoAddViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
-    var keyboardActions by remember {
-        mutableStateOf(KeyboardActions(onDone = { viewModel.searchAddress() }))
-    }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
+    var keyboardActions by remember {
+        mutableStateOf(KeyboardActions(onDone = {
+            viewModel.searchAddress()
+            keyboardController?.hide()
+            focusManager.clearFocus()
+        }))
+    }
     Column(modifier = modifier) {
         Row(
             modifier = Modifier
@@ -82,17 +94,28 @@ fun TodoAddAddressBottomSheet(
                 }
             )
         }
-        Spacer(modifier = Modifier.height(20.dp))
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-        ) {
-            itemsIndexed(items = state.jusoList) { index, item ->
-                LocationItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    juso = item
-                )
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(320.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = gray0)
+            }
+        } else {
+            Spacer(modifier = Modifier.height(20.dp))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+            ) {
+                itemsIndexed(items = state.jusoList) { index, item ->
+                    LocationItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        juso = item
+                    )
+                }
             }
         }
     }
