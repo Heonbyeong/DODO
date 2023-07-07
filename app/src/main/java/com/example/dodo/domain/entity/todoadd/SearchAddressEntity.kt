@@ -1,10 +1,14 @@
 package com.example.dodo.domain.entity.todoadd
 
 data class SearchAddressEntity(
-    val common: Common,
-    val juso: Juso
+    val results: ResultEntity
 ) {
-    data class Common(
+    data class ResultEntity(
+        val common: CommonEntity,
+        val juso: List<JusoEntity>
+    )
+
+    data class CommonEntity(
         val totalCount: String,
         val currentPage: String,
         val countPerPage: String,
@@ -12,7 +16,7 @@ data class SearchAddressEntity(
         val errorMessage: String,
     )
 
-    data class Juso(
+    data class JusoEntity(
         val roadAddr: String,
         val roadAddrPart1: String,
         val roadAddrPart2: String,
