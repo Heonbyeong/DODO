@@ -11,9 +11,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dodo.R
+import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
 import com.example.dodo.presentation.todoadd.TodoAddViewModel
 import com.example.dodo.ui.theme.BoldN10
 import com.example.dodo.ui.theme.RegularN10
@@ -38,7 +44,9 @@ fun TodoAddAddressBottomSheet(
     viewModel: TodoAddViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
-    val list = listOf<Int>(1, 2, 3, 4, 5, 6, 7, 8) // TODO
+    var keyboardActions by remember {
+        mutableStateOf(KeyboardActions(onDone = { viewModel.searchAddress() }))
+    }
 
     Column(modifier = modifier) {
         Row(
@@ -59,6 +67,7 @@ fun TodoAddAddressBottomSheet(
                 modifier = Modifier.fillMaxWidth(),
                 value = addressText,
                 onValueChange = { viewModel.changeAddressText(it) },
+                keyboardActions = keyboardActions,
                 singleLine = true,
                 textStyle = RegularN12,
                 decorationBox = { innerTextField ->
@@ -79,8 +88,11 @@ fun TodoAddAddressBottomSheet(
                 .fillMaxWidth()
                 .height(300.dp)
         ) {
-            itemsIndexed(items = list) { index, item ->
-                LocationItem(modifier = Modifier.fillMaxWidth())
+            itemsIndexed(items = state.jusoList) { index, item ->
+                LocationItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    juso = item
+                )
             }
         }
     }
@@ -88,7 +100,8 @@ fun TodoAddAddressBottomSheet(
 
 @Composable
 fun LocationItem(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    juso: SearchAddressEntity.JusoEntity
 ) {
     Row(
         modifier = modifier,
@@ -100,7 +113,7 @@ fun LocationItem(
         )
         Column(modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 15.dp)) {
             Text(
-                text = "서울 중구 세종대로 110 서울특별시청", // TODO
+                text = juso.roadAddr,
                 style = BoldN10,
                 color = gray0,
                 overflow = TextOverflow.Ellipsis,
@@ -108,7 +121,7 @@ fun LocationItem(
             )
             Text(
                 modifier = Modifier.padding(top = 5.dp),
-                text = "태평로1가 31", // TODO
+                text = juso.jibunAddr,
                 style = RegularN10,
                 color = gray0,
                 overflow = TextOverflow.Ellipsis,
