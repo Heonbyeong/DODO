@@ -47,6 +47,7 @@ import com.example.dodo.ui.theme.gray09
 import com.example.dodo.util.noRippleClickable
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate.scrollBy
+import com.naver.maps.map.CameraUpdate.scrollTo
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.LocationTrackingMode
 import com.naver.maps.map.compose.MapProperties
@@ -68,6 +69,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun TodoAddMapBottomSheet(
     modifier: Modifier = Modifier,
     viewModel: TodoAddViewModel = hiltViewModel(),
+    closeMapSheet: () -> Unit
 ) {
     val state = viewModel.collectAsState().value
     val coroutineScope = rememberCoroutineScope()
@@ -88,8 +90,16 @@ fun TodoAddMapBottomSheet(
         mutableStateOf(MapUiSettings(isLocationButtonEnabled = true))
     }
 
-    BackHandler(sheetState.isVisible) {
+    val closeSheet: () -> Unit = {
         coroutineScope.launch { sheetState.hide() }
+    }
+
+    val openSheet: () -> Unit = {
+        coroutineScope.launch { sheetState.show() }
+    }
+
+    BackHandler(sheetState.isVisible) {
+        closeSheet()
     }
 
     LaunchedEffect(Unit) {
@@ -107,8 +117,18 @@ fun TodoAddMapBottomSheet(
         }
     }
 
+    LaunchedEffect(key1 = state.latitude, key2 = state.longitude) {
+        val latLng = LatLng(state.latitude, state.longitude)
+        cameraPositionState.move(scrollTo(latLng))
+    }
+
     ModalBottomSheetLayout(
-        sheetContent = { TodoAddAddressBottomSheet(modifier = Modifier.padding(20.dp)) },
+        sheetContent = {
+            TodoAddAddressBottomSheet(
+                modifier = Modifier.padding(20.dp),
+                closeSheet = closeSheet
+            )
+        },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
@@ -158,11 +178,7 @@ fun TodoAddMapBottomSheet(
                         .clip(RoundedCornerShape(10.dp))
                         .background(gray09)
                         .align(Alignment.TopCenter)
-                        .noRippleClickable {
-                            coroutineScope.launch {
-                                sheetState.show()
-                            }
-                        },
+                        .noRippleClickable { openSheet() },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -202,7 +218,10 @@ fun TodoAddMapBottomSheet(
                     modifier = Modifier.padding(20.dp),
                     text = "여기를 도착지로 설정할게요",
                     enabled = !isMoving,
-                    onClick = { /* TODO */ },
+                    onClick = {
+                        viewModel.onClickSetDestination()
+                        closeMapSheet()
+                    },
                 )
             }
         }

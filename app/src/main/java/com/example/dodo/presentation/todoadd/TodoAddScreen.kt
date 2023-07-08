@@ -55,6 +55,7 @@ import com.example.dodo.util.dateFormat
 import com.example.dodo.util.keyboardAsState
 import com.example.dodo.util.noRippleClickable
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -66,6 +67,7 @@ fun TodoAddScreen(
     date: LocalDate = LocalDate.now(),
     isEdit: Boolean = false
 ) {
+    val state = viewModel.collectAsState().value
     val lazyColumnState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
@@ -106,7 +108,10 @@ fun TodoAddScreen(
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { TodoAddSheetLayout(viewModel = viewModel) },
+        sheetContent = { TodoAddSheetLayout(
+            viewModel = viewModel,
+            closeSheet = closeSheet
+        ) },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
@@ -207,6 +212,7 @@ fun TodoAddScreen(
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            val destinationColor = if (state.hasDestination) gray0 else gray04
                             Icon(
                                 modifier = Modifier.noRippleClickable {
                                     viewModel.onClickMap()
@@ -214,9 +220,10 @@ fun TodoAddScreen(
                                 },
                                 painter = painterResource(id = R.drawable.ic_bottomsheet_location),
                                 contentDescription = null,
-                                tint = gray04
+                                tint = destinationColor
                             )
                             Spacer(modifier = Modifier.width(10.dp))
+                            val timeColor = if (state.hasTime) gray0 else gray04
                             Icon(
                                 modifier = Modifier.noRippleClickable {
                                     viewModel.onClickTimeSelector()
@@ -224,7 +231,7 @@ fun TodoAddScreen(
                                 },
                                 painter = painterResource(id = R.drawable.ic_bottomsheet_alarm),
                                 contentDescription = null,
-                                tint = gray04
+                                tint = timeColor
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             var tint = if (todoText.isNotEmpty()) gray0 else gray04

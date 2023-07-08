@@ -1,5 +1,6 @@
 package com.example.dodo.di.network
 
+import com.example.dodo.data.features.home.todoadd.remote.api.JusoApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -11,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -19,6 +21,15 @@ object NetworkModule {
 
     private const val NAVER_BASE_URL = "https://naveropenapi.apigw.ntruss.com"
     private const val JUSO_BASE_URL = "https://business.juso.go.kr"
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class MapRetrofit
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class JusoRetrofit
+
 
     @Provides
     @Singleton
@@ -34,7 +45,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Named("Map")
+    @MapRetrofit
     fun provideRetrofitMap(okHttpClient: OkHttpClient, gson: Gson): Retrofit =
         Retrofit.Builder().apply {
             client(okHttpClient)
@@ -44,7 +55,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Named("Juso")
+    @JusoRetrofit
     fun provideRetrofitJuso(okHttpClient: OkHttpClient, gson: Gson): Retrofit =
         Retrofit.Builder().apply {
             client(okHttpClient)
@@ -58,4 +69,8 @@ object NetworkModule {
         GsonBuilder()
             .setLenient()
             .create()
+
+    @Provides
+    fun provideJusoApi(@JusoRetrofit retrofit: Retrofit) : JusoApi =
+        retrofit.create(JusoApi::class.java)
 }

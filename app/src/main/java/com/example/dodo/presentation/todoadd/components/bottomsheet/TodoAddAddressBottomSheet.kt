@@ -1,6 +1,8 @@
 package com.example.dodo.presentation.todoadd.components.bottomsheet
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,12 +23,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dodo.R
+import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
+import com.example.dodo.presentation.todoadd.TodoAddViewModel
 import com.example.dodo.ui.theme.BoldN10
 import com.example.dodo.ui.theme.RegularN10
 import com.example.dodo.ui.theme.RegularN12
@@ -32,14 +42,26 @@ import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray04
 import com.example.dodo.ui.theme.gray07
 import com.example.dodo.ui.theme.gray08
+import org.orbitmvi.orbit.compose.collectAsState
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TodoAddAddressBottomSheet(
-    modifier: Modifier = Modifier
-) { // TODO 이름 변경 가능성 있음
-    var location by remember { mutableStateOf("") }
-    val list = listOf<Int>(1, 2, 3, 4, 5, 6, 7, 8) // TODO
+    modifier: Modifier = Modifier,
+    viewModel: TodoAddViewModel = hiltViewModel(),
+    closeSheet: () -> Unit
+) {
+    val state = viewModel.collectAsState().value
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
+    var keyboardActions by remember {
+        mutableStateOf(KeyboardActions(onDone = {
+            viewModel.searchAddress()
+            keyboardController?.hide()
+            focusManager.clearFocus()
+        }))
+    }
     Column(modifier = modifier) {
         Row(
             modifier = Modifier
@@ -54,14 +76,16 @@ fun TodoAddAddressBottomSheet(
                 contentDescription = null,
                 tint = gray07
             )
+            val addressText = state.addressText
             BasicTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = location,
-                onValueChange = { location = it },
+                value = addressText,
+                onValueChange = { viewModel.changeAddressText(it) },
+                keyboardActions = keyboardActions,
                 singleLine = true,
                 textStyle = RegularN12,
                 decorationBox = { innerTextField ->
-                    if (location.isEmpty()) {
+                    if (addressText.isEmpty()) {
                         Text(
                             text = "장소·건물·주소를 검색해주세요",
                             style = RegularN12,
@@ -72,25 +96,47 @@ fun TodoAddAddressBottomSheet(
                 }
             )
         }
-        Spacer(modifier = Modifier.height(20.dp))
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-        ) {
-            itemsIndexed(items = list) { index, item ->
-                LocationItem(modifier = Modifier.fillMaxWidth())
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(320.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = gray0)
+            }
+        } else {
+            Spacer(modifier = Modifier.height(20.dp))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+            ) {
+                itemsIndexed(items = state.jusoList) { index, item ->
+                    AddressItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        juso = item,
+                        onClickAddressItem = viewModel::onClickAddressItem,
+                        closeSheet = closeSheet
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun LocationItem(
-    modifier: Modifier = Modifier
+fun AddressItem(
+    modifier: Modifier = Modifier,
+    juso: SearchAddressEntity.JusoEntity,
+    onClickAddressItem: (SearchAddressEntity.JusoEntity) -> Unit,
+    closeSheet: () -> Unit
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.clickable {
+            onClickAddressItem(juso)
+            closeSheet()
+        },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -99,7 +145,7 @@ fun LocationItem(
         )
         Column(modifier = Modifier.padding(top = 15.dp, start = 20.dp, bottom = 15.dp)) {
             Text(
-                text = "서울 중구 세종대로 110 서울특별시청", // TODO
+                text = juso.roadAddr,
                 style = BoldN10,
                 color = gray0,
                 overflow = TextOverflow.Ellipsis,
@@ -107,7 +153,7 @@ fun LocationItem(
             )
             Text(
                 modifier = Modifier.padding(top = 5.dp),
-                text = "태평로1가 31", // TODO
+                text = juso.jibunAddr,
                 style = RegularN10,
                 color = gray0,
                 overflow = TextOverflow.Ellipsis,

@@ -1,6 +1,6 @@
 package com.example.dodo.presentation.home
 
-import com.example.dodo.domain.features.home.todo.repository.TodoRepository
+import com.example.dodo.domain.repository.todo.TodoRepository
 import com.example.dodo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.syntax.simple.intent
