@@ -12,7 +12,9 @@ data class TodoAddState(
     val addressText: String = "",
     val newAddress: String = "",
     val oldAddress: String = "",
-    val jusoList: List<SearchAddressEntity.JusoEntity> = emptyList()
+    val jusoList: List<SearchAddressEntity.JusoEntity> = emptyList(),
+    val hasDestination: Boolean = false,
+    val hasTime: Boolean = false
 ) : State {
 
     val hasOldAddress = oldAddress.isNotEmpty()

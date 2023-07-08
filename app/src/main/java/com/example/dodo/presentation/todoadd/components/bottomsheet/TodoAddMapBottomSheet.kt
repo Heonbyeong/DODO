@@ -69,6 +69,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun TodoAddMapBottomSheet(
     modifier: Modifier = Modifier,
     viewModel: TodoAddViewModel = hiltViewModel(),
+    closeMapSheet: () -> Unit
 ) {
     val state = viewModel.collectAsState().value
     val coroutineScope = rememberCoroutineScope()
@@ -177,11 +178,7 @@ fun TodoAddMapBottomSheet(
                         .clip(RoundedCornerShape(10.dp))
                         .background(gray09)
                         .align(Alignment.TopCenter)
-                        .noRippleClickable {
-                            coroutineScope.launch {
-                                sheetState.show()
-                            }
-                        },
+                        .noRippleClickable { openSheet() },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -221,7 +218,10 @@ fun TodoAddMapBottomSheet(
                     modifier = Modifier.padding(20.dp),
                     text = "여기를 도착지로 설정할게요",
                     enabled = !isMoving,
-                    onClick = { /* TODO */ },
+                    onClick = {
+                        viewModel.onClickSetDestination()
+                        closeMapSheet()
+                    },
                 )
             }
         }

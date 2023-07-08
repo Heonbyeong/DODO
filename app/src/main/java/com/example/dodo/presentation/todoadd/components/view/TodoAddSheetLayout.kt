@@ -10,12 +10,13 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun TodoAddSheetLayout(
-    viewModel: TodoAddViewModel = hiltViewModel()
+    viewModel: TodoAddViewModel = hiltViewModel(),
+    closeSheet: () -> Unit
 ) {
     val state = viewModel.collectAsState().value
 
     when(state.currentSheet) {
-        BottomSheetScreen.TodoAddMapBottomSheet -> TodoAddMapBottomSheet()
+        BottomSheetScreen.TodoAddMapBottomSheet -> TodoAddMapBottomSheet(closeMapSheet = closeSheet)
         BottomSheetScreen.TodoAddTimeSelectBottomSheet -> TodoAddTimeSelectBottomSheet()
     }
 }

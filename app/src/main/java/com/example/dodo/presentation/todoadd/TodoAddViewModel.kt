@@ -106,6 +106,12 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
+    fun onClickSetDestination() = intent {
+        reduce {
+            state.copy(hasDestination = true)
+        }
+    }
+
     private fun setAddress(jusoList: List<SearchAddressEntity.JusoEntity>) = intent {
         reduce {
             state.copy(jusoList = jusoList)
