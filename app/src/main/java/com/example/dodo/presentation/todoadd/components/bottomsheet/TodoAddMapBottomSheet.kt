@@ -47,6 +47,7 @@ import com.example.dodo.ui.theme.gray09
 import com.example.dodo.util.noRippleClickable
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate.scrollBy
+import com.naver.maps.map.CameraUpdate.scrollTo
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.LocationTrackingMode
 import com.naver.maps.map.compose.MapProperties
@@ -97,7 +98,7 @@ fun TodoAddMapBottomSheet(
     }
 
     BackHandler(sheetState.isVisible) {
-        coroutineScope.launch { sheetState.hide() }
+        closeSheet()
     }
 
     LaunchedEffect(Unit) {
@@ -113,6 +114,11 @@ fun TodoAddMapBottomSheet(
         if (!isMoving) {
             viewModel.reverseGeocoding(cameraPositionState.position.target)
         }
+    }
+
+    LaunchedEffect(key1 = state.latitude, key2 = state.longitude) {
+        val latLng = LatLng(state.latitude, state.longitude)
+        cameraPositionState.move(scrollTo(latLng))
     }
 
     ModalBottomSheetLayout(

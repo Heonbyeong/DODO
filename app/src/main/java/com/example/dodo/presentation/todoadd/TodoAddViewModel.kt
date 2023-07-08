@@ -40,6 +40,20 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
+    fun geocoding() = intent {
+        viewModelScope.launch {
+            val address = geocoder.getFromLocationName(state.newAddress, 2)
+            address?.get(0)?.let {
+                reduce {
+                    state.copy(
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    )
+                }
+            }
+        }
+    }
+
     fun reverseGeocoding(latLng: LatLng) {
         intent {
             reduce {
@@ -83,6 +97,7 @@ class TodoAddViewModel @Inject constructor(
     }
 
     fun onClickAddressItem(juso: SearchAddressEntity.JusoEntity) = intent {
+        geocoding()
         reduce {
             state.copy(
                 newAddress = juso.roadAddr,
