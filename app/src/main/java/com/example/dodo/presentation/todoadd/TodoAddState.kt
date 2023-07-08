@@ -3,6 +3,7 @@ package com.example.dodo.presentation.todoadd
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
 import com.example.dodo.presentation.common.BottomSheetScreen
 import com.example.dodo.presentation.base.State
+import java.time.LocalTime
 
 data class TodoAddState(
     val isLoading: Boolean = false,
@@ -13,6 +14,7 @@ data class TodoAddState(
     val newAddress: String = "",
     val oldAddress: String = "",
     val jusoList: List<SearchAddressEntity.JusoEntity> = emptyList(),
+    val time: LocalTime = LocalTime.now(),
     val hasDestination: Boolean = false,
     val hasTime: Boolean = false
 ) : State {

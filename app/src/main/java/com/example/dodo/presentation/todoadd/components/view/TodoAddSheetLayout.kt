@@ -17,6 +17,6 @@ fun TodoAddSheetLayout(
 
     when(state.currentSheet) {
         BottomSheetScreen.TodoAddMapBottomSheet -> TodoAddMapBottomSheet(closeMapSheet = closeSheet)
-        BottomSheetScreen.TodoAddTimeSelectBottomSheet -> TodoAddTimeSelectBottomSheet()
+        BottomSheetScreen.TodoAddTimeSelectBottomSheet -> TodoAddTimeSelectBottomSheet(closeSheet = closeSheet)
     }
 }

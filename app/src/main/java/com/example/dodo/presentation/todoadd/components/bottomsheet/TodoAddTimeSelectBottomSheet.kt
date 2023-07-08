@@ -7,30 +7,31 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.commandiron.wheel_picker_compose.core.WheelPickerDefaults
 import com.example.dodo.presentation.common.BottomSheetButton
+import com.example.dodo.presentation.todoadd.TodoAddViewModel
 import com.example.dodo.ui.theme.BoldN14
 import com.example.dodo.ui.theme.MediumN12
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray04
 import com.example.dodo.util.timeFormat
+import org.orbitmvi.orbit.compose.collectAsState
 import java.util.Locale
 
 @Composable
 fun TodoAddTimeSelectBottomSheet(
     modifier: Modifier = Modifier,
+    viewModel: TodoAddViewModel = hiltViewModel(),
+    closeSheet: () -> Unit
 ) {
-    var timeText by remember { mutableStateOf("시간 설정 안 함") }
+    val state = viewModel.collectAsState().value
 
     Column(
         modifier = modifier
@@ -53,16 +54,17 @@ fun TodoAddTimeSelectBottomSheet(
             selectorProperties = WheelPickerDefaults.selectorProperties(
                 color = gray04.copy(alpha = 0.2f),
                 border = null
-            )
-        ) { snappedTime ->
-            timeText = snappedTime.timeFormat("a h시 mm분", Locale.KOREAN)
-            // TODO
-        }
+            ),
+            onSnappedTime = viewModel::onChangeTime
+        )
         Spacer(modifier = Modifier.height(30.dp))
         BottomSheetButton(
-            text = timeText,
+            text = state.time.timeFormat("a h시 mm분", Locale.KOREAN),
             enabled = true,
-            onClick = { /* TODO */ }
+            onClick = {
+                viewModel.onClickSetTime()
+                closeSheet()
+            }
         )
     }
 }

@@ -80,7 +80,7 @@ fun TodoAddAddressBottomSheet(
             BasicTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = addressText,
-                onValueChange = { viewModel.changeAddressText(it) },
+                onValueChange = { viewModel.onChangeAddressText(it) },
                 keyboardActions = keyboardActions,
                 singleLine = true,
                 textStyle = RegularN12,
