@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -84,7 +85,11 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
-    
+    fun onChangeTime(time: LocalTime) = intent {
+        reduce {
+            state.copy(time = time)
+        }
+    }
 
     fun onClickMap() = intent {
         reduce {
@@ -111,6 +116,12 @@ class TodoAddViewModel @Inject constructor(
     fun onClickSetDestination() = intent {
         reduce {
             state.copy(hasDestination = true)
+        }
+    }
+
+    fun onClickSetTime() = intent {
+        reduce {
+            state.copy(hasTime = true)
         }
     }
 
