@@ -89,7 +89,7 @@ fun HomeTodoAddBottomSheet(
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { TodoAddTimeSelectBottomSheet() },
+        sheetContent = { TodoAddTimeSelectBottomSheet(closeSheet = {}) },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
