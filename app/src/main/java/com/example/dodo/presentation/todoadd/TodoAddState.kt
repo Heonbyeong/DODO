@@ -8,6 +8,7 @@ import java.time.LocalTime
 data class TodoAddState(
     val isLoading: Boolean = false,
     val currentSheet: BottomSheetScreen = BottomSheetScreen.TodoAddMapBottomSheet,
+    val todo: String = "",
     val longitude: Double = 0.0,
     val latitude: Double = 0.0,
     val addressText: String = "",

@@ -2,6 +2,7 @@ package com.example.dodo.presentation.todoadd
 
 import android.location.Geocoder
 import androidx.lifecycle.viewModelScope
+import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
 import com.example.dodo.domain.param.SearchAddressParam
 import com.example.dodo.domain.usecase.todo.AddTodoUseCase
@@ -31,6 +32,7 @@ class TodoAddViewModel @Inject constructor(
             if (!state.isLoading) {
                 loadingStart()
                 val searchAddressParam = SearchAddressParam(keyword = state.addressText)
+
                 runCatching {
                     searchAddressUseCase(data = searchAddressParam)
                 }.onSuccess {
@@ -79,6 +81,12 @@ class TodoAddViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun onChangeTodoText(text: String) = intent {
+        reduce {
+            state.copy(todo = text)
         }
     }
 

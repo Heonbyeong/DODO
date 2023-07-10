@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,7 +78,6 @@ fun TodoAddScreen(
     val isKeyboardOpen by keyboardAsState()
 
     val title = remember { mutableStateOf(if (isEdit) "할 일 수정" else "할 일 추가") }
-    var todoText by remember { mutableStateOf("") }
 
     val items = arrayListOf<Int>(1, 2, 3, 4, 5, 6, 7) // TODO
 
@@ -194,12 +192,12 @@ fun TodoAddScreen(
                                 .navigationBarsPadding()
                                 .padding(horizontal = 15.dp)
                                 .weight(1f),
-                            value = todoText,
-                            onValueChange = { todoText = it },
+                            value = state.todo,
+                            onValueChange = viewModel::onChangeTodoText,
                             singleLine = true,
                             textStyle = MediumN12,
                             decorationBox = { innerTextField ->
-                                if (todoText.isEmpty()) {
+                                if (state.todo.isEmpty()) {
                                     androidx.compose.material.Text(
                                         text = "할 일을 입력해주세요",
                                         style = MediumN12,
@@ -234,7 +232,7 @@ fun TodoAddScreen(
                                 tint = timeColor
                             )
                             Spacer(modifier = Modifier.width(10.dp))
-                            var tint = if (todoText.isNotEmpty()) gray0 else gray04
+                            var tint = if (state.todo.isNotEmpty()) gray0 else gray04
                             Icon(
                                 modifier = Modifier.padding(5.dp),
                                 painter = painterResource(id = R.drawable.ic_circle_success),
