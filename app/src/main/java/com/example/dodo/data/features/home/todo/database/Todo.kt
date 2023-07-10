@@ -8,8 +8,6 @@ import java.time.LocalTime
 
 @Entity(tableName = "todoList")
 data class Todo(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val title: String,
     val location: String?,
     val date: LocalDate,
@@ -18,7 +16,10 @@ data class Todo(
     val lng: Float?,
     val isNotify: Boolean,
     val isDone: Boolean
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0
+}
 
 fun Todo.toEntity() = TodoEntity(
     id = this.id,

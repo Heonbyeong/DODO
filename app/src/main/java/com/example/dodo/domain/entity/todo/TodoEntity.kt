@@ -17,7 +17,6 @@ data class TodoEntity(
 )
 
 fun TodoEntity.toDataEntity() = Todo(
-    id = this.id,
     title = this.title,
     location = this.location,
     date = this.date,

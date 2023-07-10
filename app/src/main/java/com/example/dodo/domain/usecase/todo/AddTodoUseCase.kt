@@ -9,6 +9,6 @@ class AddTodoUseCase @Inject constructor(
     private val todoRepository: TodoRepository
 ) : BaseUseCase<TodoEntity, Unit>() {
 
-    override suspend operator fun invoke(todoEntity: TodoEntity) =
-        todoRepository.addTodo(todo = todoEntity)
+    override suspend operator fun invoke(data: TodoEntity) =
+        todoRepository.addTodo(todo = data)
 }
