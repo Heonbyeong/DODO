@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
 import com.example.dodo.domain.param.SearchAddressParam
-import com.example.dodo.domain.usecase.todo.AddTodoUseCase
+import com.example.dodo.domain.usecase.todoadd.AddTodoUseCase
 import com.example.dodo.domain.usecase.todoadd.SearchAddressUseCase
 import com.example.dodo.presentation.base.BaseViewModel
 import com.example.dodo.presentation.common.BottomSheetScreen
@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -26,6 +27,30 @@ class TodoAddViewModel @Inject constructor(
 ) : BaseViewModel<TodoAddState, TodoAddSideEffect>() {
 
     override val container = container<TodoAddState, TodoAddSideEffect>(TodoAddState())
+
+    
+
+    fun addTodo() {
+        intent {
+            if (!state.isLoading) {
+                loadingStart()
+                val todoEntity = TodoEntity(
+                    title = state.todo,
+                    location = state.addressText,
+                    date = state.date,
+                    time = state.time,
+                    lat = state.latitude,
+                    lng = state.longitude,
+                    isNotify = true,
+                    isDone = false
+                )
+                viewModelScope.launch {
+                    addTodoUseCase(data = todoEntity)
+                    loadingFinish()
+                }
+            }
+        }
+    }
 
     fun searchAddress() {
         intent {
@@ -81,6 +106,12 @@ class TodoAddViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun onChangeDate(date: LocalDate) = intent {
+        reduce {
+            state.copy(date = date)
         }
     }
 

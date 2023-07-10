@@ -5,13 +5,12 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class TodoEntity(
-    val id: Int,
     val title: String,
     val location: String?,
     val date: LocalDate,
     val time: LocalTime?,
-    val lat: Float?,
-    val lng: Float?,
+    val lat: Double?,
+    val lng: Double?,
     val isNotify: Boolean,
     val isDone: Boolean
 )

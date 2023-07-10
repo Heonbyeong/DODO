@@ -94,6 +94,7 @@ fun TodoAddScreen(
     }
 
     LaunchedEffect(Unit) {
+        viewModel.onChangeDate(date = date)
         lazyColumnState.scrollToItem(items.size - 1)
     }
 

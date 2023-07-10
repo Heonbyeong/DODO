@@ -1,4 +1,4 @@
-package com.example.dodo.domain.usecase.todo
+package com.example.dodo.domain.usecase.todoadd
 
 import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.repository.todo.TodoRepository
