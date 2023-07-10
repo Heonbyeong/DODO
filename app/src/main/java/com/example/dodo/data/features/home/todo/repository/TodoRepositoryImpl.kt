@@ -5,6 +5,7 @@ import com.example.dodo.data.features.home.todo.datasource.TodoLocalDataSource
 import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todo.toDataEntity
 import com.example.dodo.domain.repository.todo.TodoRepository
+import java.time.LocalDate
 import javax.inject.Inject
 
 class TodoRepositoryImpl @Inject constructor(
@@ -12,6 +13,9 @@ class TodoRepositoryImpl @Inject constructor(
 ) : TodoRepository {
     override suspend fun fetchTodoList(): List<TodoEntity> =
         todoLocalDataSource.fetchTodoList().map { it.toEntity() }
+
+    override suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<TodoEntity> =
+        todoLocalDataSource.fetchTodoListWithDate(targetDate).map { it.toEntity() }
 
     override suspend fun addTodo(todo: TodoEntity) =
         todoLocalDataSource.addTodo(todo.toDataEntity())

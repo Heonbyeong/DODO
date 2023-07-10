@@ -6,12 +6,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import java.time.LocalDate
 
 @Dao
 interface TodoDao {
 
     @Query("SELECT * FROM todoList")
     suspend fun fetchTodoList(): List<Todo>
+
+    @Query("SELECT * FROM todoList WHERE date = :targetDate")
+    suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<Todo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTodo(todo: Todo)

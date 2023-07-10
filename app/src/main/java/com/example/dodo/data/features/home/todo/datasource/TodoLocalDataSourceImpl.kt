@@ -2,6 +2,7 @@ package com.example.dodo.data.features.home.todo.datasource
 
 import com.example.dodo.data.features.home.todo.database.Todo
 import com.example.dodo.data.features.home.todo.database.TodoDao
+import java.time.LocalDate
 import javax.inject.Inject
 
 class TodoLocalDataSourceImpl @Inject constructor(
@@ -9,6 +10,9 @@ class TodoLocalDataSourceImpl @Inject constructor(
 ) : TodoLocalDataSource {
     override suspend fun fetchTodoList(): List<Todo> =
         todoDao.fetchTodoList()
+
+    override suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<Todo> =
+        todoDao.fetchTodoListWithDate(targetDate)
 
     override suspend fun addTodo(todo: Todo) =
         todoDao.addTodo(todo)
