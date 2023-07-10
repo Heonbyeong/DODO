@@ -6,6 +6,7 @@ import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
 import com.example.dodo.domain.param.SearchAddressParam
 import com.example.dodo.domain.usecase.todoadd.AddTodoUseCase
+import com.example.dodo.domain.usecase.todoadd.FetchTodoListWithDateUseCase
 import com.example.dodo.domain.usecase.todoadd.SearchAddressUseCase
 import com.example.dodo.presentation.base.BaseViewModel
 import com.example.dodo.presentation.common.BottomSheetScreen
@@ -21,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodoAddViewModel @Inject constructor(
+    private val fetchTodoListWithDateUseCase: FetchTodoListWithDateUseCase,
     private val addTodoUseCase: AddTodoUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
     private val geocoder: Geocoder
@@ -28,15 +30,30 @@ class TodoAddViewModel @Inject constructor(
 
     override val container = container<TodoAddState, TodoAddSideEffect>(TodoAddState())
 
-    
+    init {
+        fetchTodoListWithDate()
+    }
+
+    fun fetchTodoListWithDate() = intent {
+        if (!state.isLoading) {
+            loadingStart()
+            viewModelScope.launch {
+                val todoList = fetchTodoListWithDateUseCase(state.date)
+                reduce {
+                    state.copy(todoList = todoList)
+                }
+                loadingFinish()
+            }
+        }
+    }
 
     fun addTodo() {
         intent {
-            if (!state.isLoading) {
+            if (!state.isLoading && state.todo.isNotEmpty()) {
                 loadingStart()
                 val todoEntity = TodoEntity(
                     title = state.todo,
-                    location = state.addressText,
+                    location = state.newAddress,
                     date = state.date,
                     time = state.time,
                     lat = state.latitude,
@@ -46,6 +63,7 @@ class TodoAddViewModel @Inject constructor(
                 )
                 viewModelScope.launch {
                     addTodoUseCase(data = todoEntity)
+                    clearTodoAddState(todoEntity = todoEntity)
                     loadingFinish()
                 }
             }
@@ -170,6 +188,25 @@ class TodoAddViewModel @Inject constructor(
     private fun setAddress(jusoList: List<SearchAddressEntity.JusoEntity>) = intent {
         reduce {
             state.copy(jusoList = jusoList)
+        }
+    }
+
+    private fun clearTodoAddState(todoEntity: TodoEntity) = intent {
+        reduce {
+            val updateList = state.todoList + todoEntity
+            state.copy(
+                todoList = updateList,
+                todo = "",
+                longitude = 0.0,
+                latitude = 0.0,
+                addressText = "",
+                newAddress = "",
+                oldAddress = "",
+                jusoList = emptyList(),
+                time = LocalTime.now(),
+                hasDestination = false,
+                hasTime = false
+            )
         }
     }
 

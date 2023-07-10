@@ -79,38 +79,47 @@ fun TodoAddScreen(
 
     val title = remember { mutableStateOf(if (isEdit) "할 일 수정" else "할 일 추가") }
 
-    val items = arrayListOf<Int>(1, 2, 3, 4, 5, 6, 7) // TODO
-
     val closeSheet: () -> Unit = {
-        coroutineScope.launch { sheetState.hide() }
+        coroutineScope.launch {
+            focusRequester.clearFocus()
+            sheetState.hide()
+        }
     }
 
     val openSheet: () -> Unit = {
-        coroutineScope.launch { sheetState.show() }
+        coroutineScope.launch {
+            focusRequester.clearFocus()
+            sheetState.show()
+        }
     }
 
     BackHandler(sheetState.isVisible) {
         closeSheet()
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(state.todoList) {
         viewModel.onChangeDate(date = date)
-        lazyColumnState.scrollToItem(items.size - 1)
+        if (state.todoList.isNotEmpty()) {
+            lazyColumnState.scrollToItem(state.todoList.size - 1)
+        }
     }
 
     LaunchedEffect(isKeyboardOpen) {
         snapshotFlow { isKeyboardOpen }.collect {
-            if (it == KeyboardState.Opened) {
-                lazyColumnState.scrollToItem(items.size - 1)
+            val scrollable = it == KeyboardState.Opened && state.todoList.isNotEmpty()
+            if (scrollable) {
+                lazyColumnState.scrollToItem(state.todoList.size - 1)
             }
         }
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { TodoAddSheetLayout(
-            viewModel = viewModel,
-            closeSheet = closeSheet
-        ) },
+        sheetContent = {
+            TodoAddSheetLayout(
+                viewModel = viewModel,
+                closeSheet = closeSheet
+            )
+        },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
@@ -167,8 +176,8 @@ fun TodoAddScreen(
                     }
                     Spacer(modifier = Modifier.height(40.dp))
                 }
-                itemsIndexed(items = items) { index, item ->
-                    TodoAddItem()
+                itemsIndexed(items = state.todoList) { index, item ->
+                    TodoAddItem(todo = item)
                 }
             }
             Box(
@@ -235,7 +244,12 @@ fun TodoAddScreen(
                             Spacer(modifier = Modifier.width(10.dp))
                             var tint = if (state.todo.isNotEmpty()) gray0 else gray04
                             Icon(
-                                modifier = Modifier.padding(5.dp),
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .noRippleClickable {
+                                        focusRequester.clearFocus()
+                                        viewModel.addTodo()
+                                    },
                                 painter = painterResource(id = R.drawable.ic_circle_success),
                                 contentDescription = null,
                                 tint = tint
