@@ -3,6 +3,8 @@ package com.example.dodo.presentation.todoadd
 import android.location.Geocoder
 import androidx.lifecycle.viewModelScope
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
+import com.example.dodo.domain.param.SearchAddressParam
+import com.example.dodo.domain.usecase.todo.AddTodoUseCase
 import com.example.dodo.domain.usecase.todoadd.SearchAddressUseCase
 import com.example.dodo.presentation.base.BaseViewModel
 import com.example.dodo.presentation.common.BottomSheetScreen
@@ -17,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodoAddViewModel @Inject constructor(
+    private val addTodoUseCase: AddTodoUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
     private val geocoder: Geocoder
 ) : BaseViewModel<TodoAddState, TodoAddSideEffect>() {
@@ -27,9 +30,9 @@ class TodoAddViewModel @Inject constructor(
         intent {
             if (!state.isLoading) {
                 loadingStart()
-
+                val searchAddressParam = SearchAddressParam(keyword = state.addressText)
                 runCatching {
-                    searchAddressUseCase.invoke(keyword = state.addressText)
+                    searchAddressUseCase(data = searchAddressParam)
                 }.onSuccess {
                     setAddress(it.results.juso)
                 }.onFailure {
