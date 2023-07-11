@@ -31,6 +31,7 @@ import java.util.Locale
 @Composable
 fun HomeTodoListItem(
     modifier: Modifier = Modifier,
+    onClickTodo: () -> Unit,
     todo: TodoEntity
 ) {
     var isChecked by remember { mutableStateOf(false) }
@@ -47,7 +48,8 @@ fun HomeTodoListItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .noRippleClickable { }, // TODO
+                .height(60.dp)
+                .noRippleClickable { onClickTodo() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(

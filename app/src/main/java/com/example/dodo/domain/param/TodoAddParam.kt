@@ -1,13 +1,11 @@
-package com.example.dodo.data.features.home.todo.database
+package com.example.dodo.domain.param
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.example.dodo.data.features.home.todo.database.Todo
 import com.example.dodo.domain.entity.todo.TodoEntity
 import java.time.LocalDate
 import java.time.LocalTime
 
-@Entity(tableName = "todoList")
-data class Todo(
+data class TodoAddParam(
     val title: String,
     val location: String?,
     val date: LocalDate,
@@ -16,13 +14,21 @@ data class Todo(
     val lng: Double?,
     val isNotify: Boolean,
     val isDone: Boolean
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-}
+)
 
-fun Todo.toEntity() = TodoEntity(
-    id = this.id,
+fun TodoAddParam.toDataEntity() = Todo(
+    title = this.title,
+    location = this.location,
+    date = this.date,
+    time = this.time,
+    lat = this.lat,
+    lng = this.lng,
+    isNotify = this.isNotify,
+    isDone = this.isDone
+)
+
+fun TodoAddParam.toTodoEntity() = TodoEntity(
+    id = 0,
     title = this.title,
     location = this.location,
     date = this.date,

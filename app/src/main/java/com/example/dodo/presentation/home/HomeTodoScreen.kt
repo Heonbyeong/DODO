@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dodo.presentation.ScreenRoute
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
+import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoDetailBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListEmptyView
@@ -49,14 +49,26 @@ fun HomeTodoScreen(
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
-        skipHalfExpanded = false
+        skipHalfExpanded = true
     )
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
+    val closeSheet: () -> Unit = {
+        coroutineScope.launch {
+            sheetState.hide()
+        }
+    }
+
+    val openSheet: () -> Unit = {
+        coroutineScope.launch {
+            sheetState.show()
+        }
+    }
+
     BackHandler(sheetState.isVisible) {
-        coroutineScope.launch { sheetState.hide() }
+        closeSheet()
     }
 
     LaunchedEffect(Unit) {
@@ -85,10 +97,7 @@ fun HomeTodoScreen(
 
     ModalBottomSheetLayout(
         sheetContent = {
-            HomeTodoAddBottomSheet(
-                parentSheetState = sheetState,
-                viewModel = viewModel
-            )
+            HomeTodoDetailBottomSheet()
         },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
@@ -111,7 +120,11 @@ fun HomeTodoScreen(
                     itemsIndexed(items = state.todoList) { index, data ->
                         HomeTodoListItem(
                             modifier = Modifier.fillMaxWidth(),
-                            todo = data
+                            todo = data,
+                            onClickTodo = {
+                                viewModel.onClickTodoItem(data)
+                                openSheet()
+                            }
                         )
                     }
                     item {

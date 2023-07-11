@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -24,6 +25,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.dodo.R
+import com.example.dodo.presentation.home.HomeTodoViewModel
 import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.BoldN14
 import com.example.dodo.ui.theme.MediumN12
@@ -31,9 +33,16 @@ import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray03
 import com.example.dodo.ui.theme.gray09
 import com.example.dodo.ui.theme.red
+import com.example.dodo.util.timeFormat
+import org.orbitmvi.orbit.compose.collectAsState
+import java.util.Locale
 
 @Composable
-fun HomeTodoDetailBottomSheet() {
+fun HomeTodoDetailBottomSheet(
+    modifier: Modifier = Modifier,
+    viewModel: HomeTodoViewModel = hiltViewModel()
+) {
+    val state = viewModel.collectAsState().value
     var isNotify by remember { mutableStateOf(true) }
     val composition by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(R.raw.weather_storm)
@@ -49,29 +58,31 @@ fun HomeTodoDetailBottomSheet() {
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(gray09)
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "당근 거래 하기", // TODO
+            text = state.todoDetail?.title.orEmpty(),
             style = BoldN14,
             color = gray0
         )
-        if (true) { // TODO 시간 설정 한 경우
+        val hasTime = state.todoDetail?.time != null
+        if (hasTime) {
             Text(
                 modifier = Modifier.padding(top = 5.dp),
-                text = "오후 2시 30분", // TODO
+                text = state.todoDetail?.time?.timeFormat("a h:mm", Locale.KOREAN).orEmpty(),
                 style = BoldN12,
                 color = gray03
             )
         }
-        if (true) { // TODO 장소 일정일 경우
+        val hasDestination = state.todoDetail?.location.orEmpty().isNotEmpty()
+        if (hasDestination) {
             Text(
                 modifier = Modifier.padding(top = 5.dp),
-                text = "서울 중구 세종대로 110 서울특별시청",
+                text = state.todoDetail?.location.orEmpty(),
                 style = MediumN12,
                 color = gray03
             )
@@ -90,7 +101,7 @@ fun HomeTodoDetailBottomSheet() {
                 color = gray0
             )
         }
-        if (true) { // TODO 장소 일정일 경우
+        if (false) { // TODO 추후 추가 될 기능
             Spacer(modifier = Modifier.height(40.dp))
             HomeTodoDetailBottomSheetItem(
                 modifier = Modifier.padding(bottom = 20.dp),

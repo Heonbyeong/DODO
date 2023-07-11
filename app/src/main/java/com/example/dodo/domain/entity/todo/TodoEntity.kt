@@ -5,6 +5,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class TodoEntity(
+    val id: Int,
     val title: String,
     val location: String?,
     val date: LocalDate,
