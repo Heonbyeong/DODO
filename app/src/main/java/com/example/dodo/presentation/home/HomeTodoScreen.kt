@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dodo.presentation.ScreenRoute
-import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoAddBottomSheet
+import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoDetailBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListEmptyView
@@ -85,10 +85,7 @@ fun HomeTodoScreen(
 
     ModalBottomSheetLayout(
         sheetContent = {
-            HomeTodoAddBottomSheet(
-                parentSheetState = sheetState,
-                viewModel = viewModel
-            )
+            HomeTodoDetailBottomSheet()
         },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
