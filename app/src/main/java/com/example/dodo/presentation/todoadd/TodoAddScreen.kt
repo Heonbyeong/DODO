@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,7 +55,6 @@ import com.example.dodo.util.keyboardAsState
 import com.example.dodo.util.noRippleClickable
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -64,7 +62,6 @@ fun TodoAddScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: TodoAddViewModel = hiltViewModel(),
-    date: LocalDate = LocalDate.now(),
     isEdit: Boolean = false
 ) {
     val state = viewModel.collectAsState().value
@@ -79,39 +76,47 @@ fun TodoAddScreen(
     val isKeyboardOpen by keyboardAsState()
 
     val title = remember { mutableStateOf(if (isEdit) "할 일 수정" else "할 일 추가") }
-    var todoText by remember { mutableStateOf("") }
-
-    val items = arrayListOf<Int>(1, 2, 3, 4, 5, 6, 7) // TODO
 
     val closeSheet: () -> Unit = {
-        coroutineScope.launch { sheetState.hide() }
+        coroutineScope.launch {
+            focusRequester.clearFocus()
+            sheetState.hide()
+        }
     }
 
     val openSheet: () -> Unit = {
-        coroutineScope.launch { sheetState.show() }
+        coroutineScope.launch {
+            focusRequester.clearFocus()
+            sheetState.show()
+        }
     }
 
     BackHandler(sheetState.isVisible) {
         closeSheet()
     }
 
-    LaunchedEffect(Unit) {
-        lazyColumnState.scrollToItem(items.size - 1)
+    LaunchedEffect(state.todoList) {
+        if (state.todoList.isNotEmpty()) {
+            lazyColumnState.scrollToItem(state.todoList.size - 1)
+        }
     }
 
     LaunchedEffect(isKeyboardOpen) {
         snapshotFlow { isKeyboardOpen }.collect {
-            if (it == KeyboardState.Opened) {
-                lazyColumnState.scrollToItem(items.size - 1)
+            val scrollable = it == KeyboardState.Opened && state.todoList.isNotEmpty()
+            if (scrollable) {
+                lazyColumnState.scrollToItem(state.todoList.size - 1)
             }
         }
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { TodoAddSheetLayout(
-            viewModel = viewModel,
-            closeSheet = closeSheet
-        ) },
+        sheetContent = {
+            TodoAddSheetLayout(
+                viewModel = viewModel,
+                closeSheet = closeSheet
+            )
+        },
         sheetState = sheetState,
         sheetBackgroundColor = gray09,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
@@ -161,15 +166,15 @@ fun TodoAddScreen(
                     Box(modifier = Modifier.background(gray09, RoundedCornerShape(30.dp))) {
                         Text(
                             modifier = Modifier.padding(vertical = 6.dp, horizontal = 30.dp),
-                            text = date.dateFormat("yyyy년 M월 dd일"),
+                            text = state.date.dateFormat("yyyy년 M월 dd일"),
                             style = BoldN12,
                             color = gray0
                         )
                     }
                     Spacer(modifier = Modifier.height(40.dp))
                 }
-                itemsIndexed(items = items) { index, item ->
-                    TodoAddItem()
+                itemsIndexed(items = state.todoList) { index, item ->
+                    TodoAddItem(todo = item)
                 }
             }
             Box(
@@ -194,12 +199,12 @@ fun TodoAddScreen(
                                 .navigationBarsPadding()
                                 .padding(horizontal = 15.dp)
                                 .weight(1f),
-                            value = todoText,
-                            onValueChange = { todoText = it },
+                            value = state.todo,
+                            onValueChange = viewModel::onChangeTodoText,
                             singleLine = true,
                             textStyle = MediumN12,
                             decorationBox = { innerTextField ->
-                                if (todoText.isEmpty()) {
+                                if (state.todo.isEmpty()) {
                                     androidx.compose.material.Text(
                                         text = "할 일을 입력해주세요",
                                         style = MediumN12,
@@ -234,9 +239,14 @@ fun TodoAddScreen(
                                 tint = timeColor
                             )
                             Spacer(modifier = Modifier.width(10.dp))
-                            var tint = if (todoText.isNotEmpty()) gray0 else gray04
+                            var tint = if (state.todo.isNotEmpty()) gray0 else gray04
                             Icon(
-                                modifier = Modifier.padding(5.dp),
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .noRippleClickable {
+                                        focusRequester.clearFocus()
+                                        viewModel.addTodo()
+                                    },
                                 painter = painterResource(id = R.drawable.ic_circle_success),
                                 contentDescription = null,
                                 tint = tint

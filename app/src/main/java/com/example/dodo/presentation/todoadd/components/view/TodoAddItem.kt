@@ -9,16 +9,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.MediumN10
 import com.example.dodo.ui.theme.MediumN12
@@ -26,13 +25,15 @@ import com.example.dodo.ui.theme.RegularN10
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray08
 import com.example.dodo.ui.theme.gray09
+import com.example.dodo.util.timeFormat
+import java.util.Locale
 
 @Composable
 fun TodoAddItem(
     modifier: Modifier = Modifier,
+    todo: TodoEntity,
     isMine: Boolean = true,
 ) {
-    val hasLocation = true // TODO
     Box(modifier = modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
@@ -50,6 +51,7 @@ fun TodoAddItem(
                     style = BoldN12,
                     color = gray0
                 )
+                val hasLocation = todo.location?.isNotEmpty() ?: false
                 if (hasLocation) {
                     Text(
                         text = "장소 일정은 두두가 관리할게요!",
@@ -65,24 +67,29 @@ fun TodoAddItem(
                     color = gray08
                 )
                 Text(
-                    text = "당근 거래하기 (아이폰 14 Pro)", // TODO
+                    text = todo.title,
                     style = MediumN12,
                     color = gray0
                 )
-                Text(
-                    modifier = Modifier.padding(top = 5.dp),
-                    text = "시간 : 오후 8시 44분", // TODO
-                    style = MediumN10,
-                    color = gray0
-                )
-                Text(
-                    modifier = Modifier.padding(top = 5.dp),
-                    text = "장소 : 서울 중구 세종대로 110 서울특별시청", // TODO
-                    style = MediumN10,
-                    color = gray0,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                val hasTime = todo.time?.let { true } ?: false
+                if (hasTime) {
+                    Text(
+                        modifier = Modifier.padding(top = 5.dp),
+                        text = "시간 : ${todo.time?.timeFormat("a h시 mm분", Locale.KOREAN)}",
+                        style = MediumN10,
+                        color = gray0
+                    )
+                }
+                if (hasLocation) {
+                    Text(
+                        modifier = Modifier.padding(top = 5.dp),
+                        text = "장소 : ${todo.location.orEmpty()}",
+                        style = MediumN10,
+                        color = gray0,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }

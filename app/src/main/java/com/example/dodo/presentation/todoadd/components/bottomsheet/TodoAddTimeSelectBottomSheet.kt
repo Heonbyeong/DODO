@@ -59,7 +59,7 @@ fun TodoAddTimeSelectBottomSheet(
         )
         Spacer(modifier = Modifier.height(30.dp))
         BottomSheetButton(
-            text = state.time.timeFormat("a h시 mm분", Locale.KOREAN),
+            text = state.time?.let{ it.timeFormat("a h시 mm분", Locale.KOREAN) }.orEmpty(),
             enabled = true,
             onClick = {
                 viewModel.onClickSetTime()

@@ -1,23 +1,21 @@
 package com.example.dodo.domain.usecase.todoadd
 
-import com.example.dodo.BuildConfig
+import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
+import com.example.dodo.domain.param.SearchAddressParam
 import com.example.dodo.domain.repository.todoadd.TodoAddRepository
+import com.example.dodo.domain.usecase.base.BaseUseCase
 import javax.inject.Inject
 
 class SearchAddressUseCase @Inject constructor(
     private val todoAddRepository: TodoAddRepository
-) {
-    suspend operator fun invoke(
-        confmKey: String = BuildConfig.ADDRESS_API_KEY,
-        currentPage: Int = 1,
-        countPerPage: Int = 10,
-        keyword: String,
-        resultType: String = "json"
-    ) = todoAddRepository.searchAddress(
-        confmKey = confmKey,
-        currentPage = currentPage,
-        countPerPage = countPerPage,
-        keyword = keyword,
-        resultType = resultType
-    )
+) : BaseUseCase<SearchAddressParam, SearchAddressEntity>() {
+
+    override suspend fun invoke(data: SearchAddressParam): SearchAddressEntity =
+        todoAddRepository.searchAddress(
+            confmKey = data.confmKey,
+            currentPage = data.currentPage,
+            countPerPage = data.countPerPage,
+            keyword = data.keyword,
+            resultType = data.resultType
+        )
 }

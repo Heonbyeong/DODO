@@ -1,8 +1,13 @@
 package com.example.dodo.presentation.todoadd
 
 import android.location.Geocoder
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
+import com.example.dodo.domain.param.SearchAddressParam
+import com.example.dodo.domain.usecase.todoadd.AddTodoUseCase
+import com.example.dodo.domain.usecase.todoadd.FetchTodoListWithDateUseCase
 import com.example.dodo.domain.usecase.todoadd.SearchAddressUseCase
 import com.example.dodo.presentation.base.BaseViewModel
 import com.example.dodo.presentation.common.BottomSheetScreen
@@ -12,24 +17,72 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
 class TodoAddViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    private val fetchTodoListWithDateUseCase: FetchTodoListWithDateUseCase,
+    private val addTodoUseCase: AddTodoUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
     private val geocoder: Geocoder
 ) : BaseViewModel<TodoAddState, TodoAddSideEffect>() {
 
     override val container = container<TodoAddState, TodoAddSideEffect>(TodoAddState())
 
+    init {
+        initDate()
+        fetchTodoListWithDate()
+    }
+
+    fun fetchTodoListWithDate() = intent {
+        if (!state.isLoading) {
+            loadingStart()
+            viewModelScope.launch {
+                val todoList = fetchTodoListWithDateUseCase(state.date)
+                reduce {
+                    state.copy(todoList = todoList)
+                }
+                loadingFinish()
+            }
+        }
+    }
+
+    fun addTodo() {
+        checkUserEnableTime()
+        checkUserEnableLocation()
+        intent {
+            if (!state.isLoading && state.todo.isNotEmpty()) {
+                loadingStart()
+                val todoEntity = TodoEntity(
+                    title = state.todo,
+                    location = state.newAddress,
+                    date = state.date,
+                    time = state.time,
+                    lat = state.latitude,
+                    lng = state.longitude,
+                    isNotify = true,
+                    isDone = false
+                )
+                viewModelScope.launch {
+                    addTodoUseCase(data = todoEntity)
+                    clearTodoAddState(todoEntity = todoEntity)
+                    loadingFinish()
+                }
+            }
+        }
+    }
+
     fun searchAddress() {
         intent {
             if (!state.isLoading) {
                 loadingStart()
+                val searchAddressParam = SearchAddressParam(keyword = state.addressText)
 
                 runCatching {
-                    searchAddressUseCase.invoke(keyword = state.addressText)
+                    searchAddressUseCase(data = searchAddressParam)
                 }.onSuccess {
                     setAddress(it.results.juso)
                 }.onFailure {
@@ -79,6 +132,18 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
+    fun onChangeDate(date: LocalDate) = intent {
+        reduce {
+            state.copy(date = date)
+        }
+    }
+
+    fun onChangeTodoText(text: String) = intent {
+        reduce {
+            state.copy(todo = text)
+        }
+    }
+
     fun onChangeAddressText(text: String) = intent {
         reduce {
             state.copy(addressText = text)
@@ -125,9 +190,57 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
+    private fun initDate() = intent {
+        val date = savedStateHandle.get<String>("selectedDate")?.let {
+            LocalDate.parse(it)
+        } ?: LocalDate.now()
+        reduce {
+            state.copy(date = date)
+        }
+    }
+
     private fun setAddress(jusoList: List<SearchAddressEntity.JusoEntity>) = intent {
         reduce {
             state.copy(jusoList = jusoList)
+        }
+    }
+
+    private fun checkUserEnableTime() = intent {
+        if (!state.hasTime) {
+            reduce {
+                state.copy(time = null)
+            }
+        }
+    }
+
+    private fun checkUserEnableLocation() = intent {
+        if (!state.hasDestination) {
+            reduce {
+                state.copy(
+                    newAddress = "",
+                    latitude = 0.0,
+                    longitude = 0.0
+                )
+            }
+        }
+    }
+
+    private fun clearTodoAddState(todoEntity: TodoEntity) = intent {
+        reduce {
+            val updateList = state.todoList + todoEntity
+            state.copy(
+                todoList = updateList,
+                todo = "",
+                longitude = 0.0,
+                latitude = 0.0,
+                addressText = "",
+                newAddress = "",
+                oldAddress = "",
+                jusoList = emptyList(),
+                time = LocalTime.now(),
+                hasDestination = false,
+                hasTime = false
+            )
         }
     }
 

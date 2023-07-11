@@ -1,10 +1,13 @@
 package com.example.dodo.data.features.home.todo.datasource
 
 import com.example.dodo.data.features.home.todo.database.Todo
+import java.time.LocalDate
 
 interface TodoLocalDataSource {
 
     suspend fun fetchTodoList(): List<Todo>
+
+    suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<Todo>
 
     suspend fun addTodo(todo: Todo)
 

@@ -20,5 +20,5 @@ class DateTimeConverter {
 
     @TypeConverter
     fun stringToLocalTime(string: String?): LocalTime? =
-        LocalTime.parse(string)
+        string?.let { LocalTime.parse(string) }
 }

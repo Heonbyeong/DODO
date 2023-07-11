@@ -76,11 +76,6 @@ fun HomeTodoScreen(
         }
     }
 
-//    LaunchedEffect(sheetState.isVisible) {
-//        if (state.expanded && sheetState.isVisible) sheetState.animateTo(ModalBottomSheetValue.Expanded)
-//        else if (!state.expanded && !sheetState.isVisible) sheetState.animateTo(ModalBottomSheetValue.HalfExpanded)
-//    }
-
     ModalBottomSheetLayout(
         sheetContent = {
             HomeTodoAddBottomSheet(
@@ -111,9 +106,10 @@ fun HomeTodoScreen(
                         HomeTodoListItem(modifier = Modifier.fillMaxWidth())
                     }
                     item {
+                        val selectedDate = state.selectedDate.toString()
                         HomeTodoListAddView(
                             modifier = Modifier.padding(top = 20.dp),
-                            onClickAdd = { navController.navigate(ScreenRoute.ADD.name) }
+                            onClickAdd = { navController.navigate("${ScreenRoute.ADD.name}/$selectedDate") }
                         )
                         Spacer(modifier = Modifier.height(75.dp))
                     }
