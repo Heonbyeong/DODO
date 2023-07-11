@@ -68,6 +68,10 @@ fun HomeTodoScreen(
         }
     }
 
+    LaunchedEffect(state.selectedDate) {
+        viewModel.fetchTodoListWithDate()
+    }
+
     LaunchedEffect(sideEffect) {
         sideEffect.collect {
             when (it) {
@@ -100,10 +104,12 @@ fun HomeTodoScreen(
                 item {
                     HorizontalCalendar()
                 }
-                val todoList = listOf<Int>(1, 2, 3, 4, 5) // TODO 테스트 용
-                if (todoList.isNotEmpty()) {
-                    itemsIndexed(items = todoList) { index, data ->
-                        HomeTodoListItem(modifier = Modifier.fillMaxWidth())
+                if (state.todoList.isNotEmpty()) {
+                    itemsIndexed(items = state.todoList) { index, data ->
+                        HomeTodoListItem(
+                            modifier = Modifier.fillMaxWidth(),
+                            todo = data
+                        )
                     }
                     item {
                         val selectedDate = state.selectedDate.toString()

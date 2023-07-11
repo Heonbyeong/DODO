@@ -19,15 +19,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.dodo.R
+import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.MediumN10
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray07
 import com.example.dodo.util.noRippleClickable
+import com.example.dodo.util.timeFormat
+import java.util.Locale
 
 @Composable
 fun HomeTodoListItem(
     modifier: Modifier = Modifier,
+    todo: TodoEntity
 ) {
     var isChecked by remember { mutableStateOf(false) }
     Row(
@@ -43,7 +47,7 @@ fun HomeTodoListItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .noRippleClickable {  }, // TODO
+                .noRippleClickable { }, // TODO
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -51,20 +55,22 @@ fun HomeTodoListItem(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "두두 만나기", // TODO
+                    text = todo.title,
                     style = BoldN12,
                     color = gray0,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                if (true) // TODO 시간을 설정 한 경우에만 표시
+                val hasTime = todo.time != null
+                if (hasTime) {
                     Text(
                         modifier = Modifier.padding(top = 4.dp),
-                        text = "오전 11:30", // TODO
+                        text = todo.time?.timeFormat("a h:mm", Locale.KOREAN).orEmpty(),
                         style = MediumN10,
                         color = gray0,
                         maxLines = 1
                     )
+                }
             }
             Icon(
                 modifier = Modifier.padding(horizontal = 20.dp),
