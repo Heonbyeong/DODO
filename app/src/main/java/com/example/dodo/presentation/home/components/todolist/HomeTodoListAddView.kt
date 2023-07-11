@@ -20,18 +20,20 @@ import com.example.dodo.ui.theme.MediumN12
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray09
 import com.example.dodo.util.noRippleClickable
+import java.time.LocalDate
 
 @Composable
 fun HomeTodoListAddView(
     modifier: Modifier = Modifier,
-    onClickAdd: () -> Unit
+    selectedDate: LocalDate,
+    onClickAdd: (LocalDate) -> Unit
 ) {
     Box(
         modifier = modifier
             .clip(shape = RoundedCornerShape(30.dp))
             .background(gray0)
             .noRippleClickable {
-                onClickAdd()
+                onClickAdd(selectedDate)
             },
         contentAlignment = Alignment.Center
     ) {

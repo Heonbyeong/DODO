@@ -1,11 +1,12 @@
 package com.example.dodo.presentation.home
 
-import com.example.dodo.data.features.home.todo.database.Todo
+import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.presentation.base.State
 import java.time.LocalDate
 
 data class HomeTodoState(
+    val isLoading: Boolean = false,
     val selectedDate: LocalDate = LocalDate.now(),
-    val todo: Todo? = null,
+    val todoList: List<TodoEntity> = emptyList(),
 ) : State {
 }

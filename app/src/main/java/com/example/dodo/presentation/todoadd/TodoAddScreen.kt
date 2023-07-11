@@ -166,7 +166,7 @@ fun TodoAddScreen(
                     Box(modifier = Modifier.background(gray09, RoundedCornerShape(30.dp))) {
                         Text(
                             modifier = Modifier.padding(vertical = 6.dp, horizontal = 30.dp),
-                            text = state.date.dateFormat("yyyy년 M월 dd일"),
+                            text = state.date.dateFormat("yyyy년 M월 d일"),
                             style = BoldN12,
                             color = gray0
                         )
