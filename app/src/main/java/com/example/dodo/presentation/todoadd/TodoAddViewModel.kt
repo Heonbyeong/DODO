@@ -1,6 +1,7 @@
 package com.example.dodo.presentation.todoadd
 
 import android.location.Geocoder
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodoAddViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val fetchTodoListWithDateUseCase: FetchTodoListWithDateUseCase,
     private val addTodoUseCase: AddTodoUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
@@ -31,6 +33,7 @@ class TodoAddViewModel @Inject constructor(
     override val container = container<TodoAddState, TodoAddSideEffect>(TodoAddState())
 
     init {
+        initDate()
         fetchTodoListWithDate()
     }
 
@@ -48,6 +51,8 @@ class TodoAddViewModel @Inject constructor(
     }
 
     fun addTodo() {
+        checkUserEnableTime()
+        checkUserEnableLocation()
         intent {
             if (!state.isLoading && state.todo.isNotEmpty()) {
                 loadingStart()
@@ -185,9 +190,38 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
+    private fun initDate() = intent {
+        val date = savedStateHandle.get<String>("selectedDate")?.let {
+            LocalDate.parse(it)
+        } ?: LocalDate.now()
+        reduce {
+            state.copy(date = date)
+        }
+    }
+
     private fun setAddress(jusoList: List<SearchAddressEntity.JusoEntity>) = intent {
         reduce {
             state.copy(jusoList = jusoList)
+        }
+    }
+
+    private fun checkUserEnableTime() = intent {
+        if (!state.hasTime) {
+            reduce {
+                state.copy(time = null)
+            }
+        }
+    }
+
+    private fun checkUserEnableLocation() = intent {
+        if (!state.hasDestination) {
+            reduce {
+                state.copy(
+                    newAddress = "",
+                    latitude = 0.0,
+                    longitude = 0.0
+                )
+            }
         }
     }
 

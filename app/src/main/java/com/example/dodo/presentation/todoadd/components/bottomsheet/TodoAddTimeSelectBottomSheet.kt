@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
@@ -24,7 +23,6 @@ import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray04
 import com.example.dodo.util.timeFormat
 import org.orbitmvi.orbit.compose.collectAsState
-import java.time.LocalTime
 import java.util.Locale
 
 @Composable
@@ -34,12 +32,6 @@ fun TodoAddTimeSelectBottomSheet(
     closeSheet: () -> Unit
 ) {
     val state = viewModel.collectAsState().value
-
-    LaunchedEffect(Unit) {
-        viewModel.onChangeTime(LocalTime.now())
-    }
-
-
 
     Column(
         modifier = modifier
@@ -67,7 +59,7 @@ fun TodoAddTimeSelectBottomSheet(
         )
         Spacer(modifier = Modifier.height(30.dp))
         BottomSheetButton(
-            text = state.time.timeFormat("a h시 mm분", Locale.KOREAN),
+            text = state.time?.let{ it.timeFormat("a h시 mm분", Locale.KOREAN) }.orEmpty(),
             enabled = true,
             onClick = {
                 viewModel.onClickSetTime()

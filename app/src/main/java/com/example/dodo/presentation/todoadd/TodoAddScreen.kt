@@ -55,7 +55,6 @@ import com.example.dodo.util.keyboardAsState
 import com.example.dodo.util.noRippleClickable
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -63,7 +62,6 @@ fun TodoAddScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: TodoAddViewModel = hiltViewModel(),
-    date: LocalDate = LocalDate.now(),
     isEdit: Boolean = false
 ) {
     val state = viewModel.collectAsState().value
@@ -98,7 +96,6 @@ fun TodoAddScreen(
     }
 
     LaunchedEffect(state.todoList) {
-        viewModel.onChangeDate(date = date)
         if (state.todoList.isNotEmpty()) {
             lazyColumnState.scrollToItem(state.todoList.size - 1)
         }
@@ -169,7 +166,7 @@ fun TodoAddScreen(
                     Box(modifier = Modifier.background(gray09, RoundedCornerShape(30.dp))) {
                         Text(
                             modifier = Modifier.padding(vertical = 6.dp, horizontal = 30.dp),
-                            text = date.dateFormat("yyyy년 M월 dd일"),
+                            text = state.date.dateFormat("yyyy년 M월 dd일"),
                             style = BoldN12,
                             color = gray0
                         )

@@ -1,9 +1,11 @@
 package com.example.dodo.presentation.main
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.dodo.presentation.ScreenRoute
 import com.example.dodo.presentation.common.NavAnimation
 import com.example.dodo.presentation.todoadd.TodoAddScreen
@@ -21,7 +23,14 @@ fun Dodo(
                 MainScreen(navController = navController)
             }
         }
-        composable(ScreenRoute.ADD.name) {
+        composable(
+            route = ScreenRoute.ADD.name + "/{selectedDate}",
+            arguments = listOf(
+                navArgument("selectedDate") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
             NavAnimation {
                 TodoAddScreen(navController = navController)
             }

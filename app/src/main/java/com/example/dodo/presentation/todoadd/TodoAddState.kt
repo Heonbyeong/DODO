@@ -19,7 +19,7 @@ data class TodoAddState(
     val newAddress: String = "",
     val oldAddress: String = "",
     val jusoList: List<SearchAddressEntity.JusoEntity> = emptyList(),
-    val time: LocalTime = LocalTime.now(),
+    val time: LocalTime? = LocalTime.now(),
     val hasDestination: Boolean = false,
     val hasTime: Boolean = false
 ) : State {
