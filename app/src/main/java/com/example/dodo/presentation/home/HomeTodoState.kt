@@ -8,5 +8,6 @@ data class HomeTodoState(
     val isLoading: Boolean = false,
     val selectedDate: LocalDate = LocalDate.now(),
     val todoList: List<TodoEntity> = emptyList(),
+    val todoDetail: TodoEntity? = null,
 ) : State {
 }

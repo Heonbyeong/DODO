@@ -55,8 +55,20 @@ fun HomeTodoScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
+    val closeSheet: () -> Unit = {
+        coroutineScope.launch {
+            sheetState.hide()
+        }
+    }
+
+    val openSheet: () -> Unit = {
+        coroutineScope.launch {
+            sheetState.show()
+        }
+    }
+
     BackHandler(sheetState.isVisible) {
-        coroutineScope.launch { sheetState.hide() }
+        closeSheet()
     }
 
     LaunchedEffect(Unit) {
@@ -108,7 +120,11 @@ fun HomeTodoScreen(
                     itemsIndexed(items = state.todoList) { index, data ->
                         HomeTodoListItem(
                             modifier = Modifier.fillMaxWidth(),
-                            todo = data
+                            todo = data,
+                            onClickTodo = {
+                                viewModel.onClickTodoItem(data)
+                                openSheet()
+                            }
                         )
                     }
                     item {

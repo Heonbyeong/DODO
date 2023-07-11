@@ -1,6 +1,7 @@
 package com.example.dodo.presentation.home
 
 import androidx.lifecycle.viewModelScope
+import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.usecase.todoadd.FetchTodoListWithDateUseCase
 import com.example.dodo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +39,12 @@ class HomeTodoViewModel @Inject constructor(
     fun onChangeDate(date: LocalDate) = intent {
         reduce {
             state.copy(selectedDate = date)
+        }
+    }
+
+    fun onClickTodoItem(todo: TodoEntity) = intent {
+        reduce {
+            state.copy(todoDetail = todo)
         }
     }
 
