@@ -3,9 +3,10 @@ package com.example.dodo.presentation.todoadd
 import android.location.Geocoder
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
 import com.example.dodo.domain.param.SearchAddressParam
+import com.example.dodo.domain.param.TodoAddParam
+import com.example.dodo.domain.param.toTodoEntity
 import com.example.dodo.domain.usecase.todoadd.AddTodoUseCase
 import com.example.dodo.domain.usecase.todoadd.FetchTodoListWithDateUseCase
 import com.example.dodo.domain.usecase.todoadd.SearchAddressUseCase
@@ -56,7 +57,7 @@ class TodoAddViewModel @Inject constructor(
         intent {
             if (!state.isLoading && state.todo.isNotEmpty()) {
                 loadingStart()
-                val todoEntity = TodoEntity(
+                val todoAddParam = TodoAddParam(
                     title = state.todo,
                     location = state.newAddress,
                     date = state.date,
@@ -67,8 +68,8 @@ class TodoAddViewModel @Inject constructor(
                     isDone = false
                 )
                 viewModelScope.launch {
-                    addTodoUseCase(data = todoEntity)
-                    clearTodoAddState(todoEntity = todoEntity)
+                    addTodoUseCase(data = todoAddParam)
+                    clearTodoAddState(todoAddParam = todoAddParam)
                     loadingFinish()
                 }
             }
@@ -225,11 +226,12 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
-    private fun clearTodoAddState(todoEntity: TodoEntity) = intent {
+    private fun clearTodoAddState(todoAddParam: TodoAddParam) = intent {
+        fetchTodoListWithDate()
         reduce {
-            val updateList = state.todoList + todoEntity
+            val updateTodoList = state.todoList + todoAddParam.toTodoEntity()
             state.copy(
-                todoList = updateList,
+                todoList = updateTodoList,
                 todo = "",
                 longitude = 0.0,
                 latitude = 0.0,
