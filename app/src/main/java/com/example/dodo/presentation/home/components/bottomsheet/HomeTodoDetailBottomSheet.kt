@@ -101,7 +101,7 @@ fun HomeTodoDetailBottomSheet(
                 color = gray0
             )
         }
-        if (hasDestination) { // TODO 장소 일정일 경우
+        if (false) { // TODO 추후 추가 될 기능
             Spacer(modifier = Modifier.height(40.dp))
             HomeTodoDetailBottomSheetItem(
                 modifier = Modifier.padding(bottom = 20.dp),
