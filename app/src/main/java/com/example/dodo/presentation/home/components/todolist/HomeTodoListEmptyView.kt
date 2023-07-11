@@ -1,6 +1,7 @@
 package com.example.dodo.presentation.home.components.todolist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,17 +11,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dodo.ui.theme.BoldN12
 import com.example.dodo.ui.theme.RegularN12
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray03
 import com.example.dodo.ui.theme.gray09
+import java.time.LocalDate
 
 @Composable
 fun HomeTodoListEmptyView(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedDate: LocalDate,
+    onClickEmptyView: (LocalDate) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -39,6 +42,7 @@ fun HomeTodoListEmptyView(
                     color = gray0,
                     shape = RoundedCornerShape(10.dp)
                 )
+                .clickable { onClickEmptyView(selectedDate) }
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 9.dp),
@@ -48,10 +52,4 @@ fun HomeTodoListEmptyView(
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeTodoListEmptyPreView() {
-    HomeTodoListEmptyView()
 }

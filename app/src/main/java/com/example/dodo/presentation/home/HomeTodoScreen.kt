@@ -75,6 +75,9 @@ fun HomeTodoScreen(
     LaunchedEffect(sideEffect) {
         sideEffect.collect {
             when (it) {
+                is HomeTodoSideEffect.MoveToAdd -> {
+                    navController.navigate("${ScreenRoute.ADD.name}/${it.date}")
+                }
                 else -> {}
             }
         }
@@ -112,10 +115,10 @@ fun HomeTodoScreen(
                         )
                     }
                     item {
-                        val selectedDate = state.selectedDate.toString()
                         HomeTodoListAddView(
                             modifier = Modifier.padding(top = 20.dp),
-                            onClickAdd = { navController.navigate("${ScreenRoute.ADD.name}/$selectedDate") }
+                            selectedDate = state.selectedDate,
+                            onClickAdd = viewModel::onClickAdd
                         )
                         Spacer(modifier = Modifier.height(75.dp))
                     }
@@ -124,7 +127,9 @@ fun HomeTodoScreen(
                         HomeTodoListEmptyView(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 100.dp)
+                                .padding(vertical = 100.dp),
+                            selectedDate = state.selectedDate,
+                            onClickEmptyView = viewModel::onClickAdd
                         )
                     }
                 }

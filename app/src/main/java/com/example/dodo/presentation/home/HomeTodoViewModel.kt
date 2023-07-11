@@ -6,6 +6,7 @@ import com.example.dodo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import java.time.LocalDate
@@ -38,6 +39,10 @@ class HomeTodoViewModel @Inject constructor(
         reduce {
             state.copy(selectedDate = date)
         }
+    }
+
+    fun onClickAdd(date: LocalDate) = intent {
+        postSideEffect(HomeTodoSideEffect.MoveToAdd(date.toString()))
     }
 
     private fun loadingStart() = intent {
