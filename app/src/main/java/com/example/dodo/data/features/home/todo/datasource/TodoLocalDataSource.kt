@@ -9,6 +9,8 @@ interface TodoLocalDataSource {
 
     suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<Todo>
 
+    suspend fun fetchTodo(id: Int) : Todo
+
     suspend fun addTodo(todo: Todo)
 
     suspend fun editTodo(todo: Todo)

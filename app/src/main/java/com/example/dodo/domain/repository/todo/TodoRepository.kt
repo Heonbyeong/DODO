@@ -10,6 +10,8 @@ interface TodoRepository {
 
     suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<TodoEntity>
 
+    suspend fun fetchTodo(id: Int): TodoEntity
+
     suspend fun addTodo(todo: TodoAddParam)
 
     suspend fun editTodo(todo: TodoAddParam)

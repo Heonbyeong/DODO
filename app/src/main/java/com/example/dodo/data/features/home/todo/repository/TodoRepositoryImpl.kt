@@ -19,6 +19,9 @@ class TodoRepositoryImpl @Inject constructor(
     override suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<TodoEntity> =
         todoLocalDataSource.fetchTodoListWithDate(targetDate).map { it.toEntity() }
 
+    override suspend fun fetchTodo(id: Int): TodoEntity =
+        todoLocalDataSource.fetchTodo(id).toEntity()
+
     override suspend fun addTodo(todo: TodoAddParam) =
         todoLocalDataSource.addTodo(todo.toDataEntity())
 

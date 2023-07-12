@@ -17,6 +17,9 @@ interface TodoDao {
     @Query("SELECT * FROM todoList WHERE date = :targetDate")
     suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<Todo>
 
+    @Query("SELECT * FROM todoList WHERE id = :id")
+    suspend fun fetchTodo(id: Int) : Todo
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTodo(todo: Todo)
 
