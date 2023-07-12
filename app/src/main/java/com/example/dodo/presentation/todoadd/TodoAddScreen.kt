@@ -27,8 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -62,7 +60,6 @@ fun TodoAddScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: TodoAddViewModel = hiltViewModel(),
-    isEdit: Boolean = false
 ) {
     val state = viewModel.collectAsState().value
     val lazyColumnState = rememberLazyListState()
@@ -74,8 +71,6 @@ fun TodoAddScreen(
     )
     val focusRequester = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
-
-    val title = remember { mutableStateOf(if (isEdit) "할 일 수정" else "할 일 추가") }
 
     val closeSheet: () -> Unit = {
         coroutineScope.launch {
@@ -148,7 +143,7 @@ fun TodoAddScreen(
                 )
                 Text(
                     modifier = Modifier.align(Alignment.Center),
-                    text = title.value,
+                    text = state.titleText,
                     style = BoldN14,
                     color = gray0
                 )
@@ -174,7 +169,10 @@ fun TodoAddScreen(
                     Spacer(modifier = Modifier.height(40.dp))
                 }
                 itemsIndexed(items = state.todoList) { index, item ->
-                    TodoAddItem(todo = item)
+                    TodoAddItem(
+                        todo = item,
+                        isEdit = state.isEdit
+                    )
                 }
             }
             Box(

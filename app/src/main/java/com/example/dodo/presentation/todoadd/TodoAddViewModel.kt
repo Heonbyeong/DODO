@@ -7,6 +7,7 @@ import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
 import com.example.dodo.domain.param.SearchAddressParam
 import com.example.dodo.domain.param.TodoAddParam
 import com.example.dodo.domain.param.toTodoEntity
+import com.example.dodo.domain.usecase.todo.FetchTodoUseCase
 import com.example.dodo.domain.usecase.todoadd.AddTodoUseCase
 import com.example.dodo.domain.usecase.todoadd.FetchTodoListWithDateUseCase
 import com.example.dodo.domain.usecase.todoadd.SearchAddressUseCase
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class TodoAddViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val fetchTodoListWithDateUseCase: FetchTodoListWithDateUseCase,
+    private val fetchTodoUseCase: FetchTodoUseCase,
     private val addTodoUseCase: AddTodoUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
     private val geocoder: Geocoder
@@ -34,12 +36,12 @@ class TodoAddViewModel @Inject constructor(
     override val container = container<TodoAddState, TodoAddSideEffect>(TodoAddState())
 
     init {
-        initDate()
+        init()
         fetchTodoListWithDate()
     }
 
     fun fetchTodoListWithDate() = intent {
-        if (!state.isLoading) {
+        if (!state.isLoading && !state.isEdit) {
             loadingStart()
             viewModelScope.launch {
                 val todoList = fetchTodoListWithDateUseCase(state.date)
@@ -191,12 +193,40 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
-    private fun initDate() = intent {
+    private fun init() = intent {
         val date = savedStateHandle.get<String>("selectedDate")?.let {
             LocalDate.parse(it)
         } ?: LocalDate.now()
+        val isEdit = savedStateHandle["isEdit"] ?: false
+        val id = savedStateHandle["id"] ?: 0
         reduce {
-            state.copy(date = date)
+            state.copy(
+                date = date,
+                isEdit = isEdit,
+                id = id
+            )
+        }
+        checkFromEdit()
+    }
+
+    private fun checkFromEdit() = intent {
+        if (!state.isLoading && state.isEdit) {
+            loadingStart()
+            viewModelScope.launch {
+                val todo = fetchTodoUseCase(state.id)
+                reduce {
+                    state.copy(
+                        todo = todo.title,
+                        longitude = todo.lng ?: 126.9783881,
+                        latitude = todo.lat ?: 37.5666102,
+                        newAddress = todo.location.orEmpty(),
+                        time = todo.time,
+                        hasDestination = todo.location.orEmpty().isNotEmpty(),
+                        hasTime = todo.time != null,
+                    )
+                }
+                loadingFinish()
+            }
         }
     }
 
