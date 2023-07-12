@@ -88,7 +88,8 @@ fun HomeTodoScreen(
         sideEffect.collect {
             when (it) {
                 is HomeTodoSideEffect.MoveToAdd -> {
-                    navController.navigate("${ScreenRoute.ADD.name}/${it.date}")
+                    closeSheet()
+                    navController.navigate("${ScreenRoute.ADD.name}/${it.date}/${it.isEdit}/${it.id}")
                 }
                 else -> {}
             }

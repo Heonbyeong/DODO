@@ -24,10 +24,18 @@ fun Dodo(
             }
         }
         composable(
-            route = ScreenRoute.ADD.name + "/{selectedDate}",
+            route = ScreenRoute.ADD.name + "/{selectedDate}/{isEdit}/{id}",
             arguments = listOf(
                 navArgument("selectedDate") {
                     type = NavType.StringType
+                },
+                navArgument("isEdit") {
+                    type = NavType.BoolType
+                    defaultValue = false
+                },
+                navArgument("id") {
+                    type = NavType.IntType
+                    defaultValue = 0
                 }
             )
         ) {
