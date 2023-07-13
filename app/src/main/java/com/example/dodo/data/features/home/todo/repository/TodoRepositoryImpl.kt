@@ -4,6 +4,8 @@ import com.example.dodo.data.features.home.todo.database.toEntity
 import com.example.dodo.data.features.home.todo.datasource.TodoLocalDataSource
 import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todo.toDataEntity
+import com.example.dodo.domain.param.todo.EditTodoParam
+import com.example.dodo.domain.param.todo.toDataEntity
 import com.example.dodo.domain.param.todoadd.TodoAddParam
 import com.example.dodo.domain.param.todoadd.toDataEntity
 import com.example.dodo.domain.repository.todo.TodoRepository
@@ -25,7 +27,7 @@ class TodoRepositoryImpl @Inject constructor(
     override suspend fun addTodo(todo: TodoAddParam) =
         todoLocalDataSource.addTodo(todo.toDataEntity())
 
-    override suspend fun editTodo(todo: TodoAddParam) =
+    override suspend fun editTodo(todo: EditTodoParam) =
         todoLocalDataSource.editTodo(todo.toDataEntity())
 
     override suspend fun deleteTodo(todo: TodoEntity) =
