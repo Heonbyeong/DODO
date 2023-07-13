@@ -22,7 +22,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -91,7 +93,7 @@ fun HomeTodoScreen(
                     closeSheet()
                     navController.navigate("${ScreenRoute.ADD.name}/${it.date}/${it.isEdit}/${it.id}")
                 }
-                else -> {}
+                is HomeTodoSideEffect.HideBottomSheet -> closeSheet()
             }
         }
     }
