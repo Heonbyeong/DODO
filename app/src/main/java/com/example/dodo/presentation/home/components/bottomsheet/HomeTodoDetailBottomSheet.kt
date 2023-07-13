@@ -48,7 +48,7 @@ fun HomeTodoDetailBottomSheet(
         spec = LottieCompositionSpec.RawRes(R.raw.weather_storm)
     )
     val lottieAnimatable = rememberLottieAnimatable()
-    
+
     LaunchedEffect(composition) {
         lottieAnimatable.animate(
             composition = composition,
@@ -117,7 +117,13 @@ fun HomeTodoDetailBottomSheet(
             modifier = Modifier.padding(vertical = 10.dp),
             color = gray0,
             itemType = ItemType.EDIT,
-            onClickItem = { /*TODO*/ },
+            onClickItem = {
+                viewModel.onClickAdd(
+                    date = state.selectedDate,
+                    isEdit = true,
+                    id = state.todoDetail?.id ?: 0
+                )
+            },
             onCheckedChange = null,
         )
         HomeTodoDetailBottomSheetItem(

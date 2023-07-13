@@ -1,4 +1,4 @@
-package com.example.dodo.domain.param
+package com.example.dodo.domain.param.todoadd
 
 import com.example.dodo.BuildConfig
 

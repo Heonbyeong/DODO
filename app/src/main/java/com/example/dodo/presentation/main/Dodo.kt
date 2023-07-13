@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.dodo.presentation.ScreenRoute
+import com.example.dodo.presentation.base.ScreenRoute
 import com.example.dodo.presentation.common.NavAnimation
 import com.example.dodo.presentation.todoadd.TodoAddScreen
 
@@ -24,10 +24,18 @@ fun Dodo(
             }
         }
         composable(
-            route = ScreenRoute.ADD.name + "/{selectedDate}",
+            route = ScreenRoute.ADD.name + "/{selectedDate}/{isEdit}/{id}",
             arguments = listOf(
                 navArgument("selectedDate") {
                     type = NavType.StringType
+                },
+                navArgument("isEdit") {
+                    type = NavType.BoolType
+                    defaultValue = false
+                },
+                navArgument("id") {
+                    type = NavType.IntType
+                    defaultValue = 0
                 }
             )
         ) {

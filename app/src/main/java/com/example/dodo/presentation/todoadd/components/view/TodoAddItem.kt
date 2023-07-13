@@ -32,7 +32,7 @@ import java.util.Locale
 fun TodoAddItem(
     modifier: Modifier = Modifier,
     todo: TodoEntity,
-    isMine: Boolean = true,
+    isEdit: Boolean = false
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Box(
@@ -46,8 +46,9 @@ fun TodoAddItem(
                     .wrapContentSize()
                     .padding(10.dp)
             ) {
+                val title = if (isEdit) "할 일을 수정했어요." else "할 일을 등록했어요."
                 Text(
-                    text = "할 일을 등록했어요.",
+                    text = title,
                     style = BoldN12,
                     color = gray0
                 )

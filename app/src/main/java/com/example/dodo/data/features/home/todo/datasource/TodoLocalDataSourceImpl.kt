@@ -14,6 +14,9 @@ class TodoLocalDataSourceImpl @Inject constructor(
     override suspend fun fetchTodoListWithDate(targetDate: LocalDate): List<Todo> =
         todoDao.fetchTodoListWithDate(targetDate)
 
+    override suspend fun fetchTodo(id: Int): Todo =
+        todoDao.fetchTodo(id)
+
     override suspend fun addTodo(todo: Todo) =
         todoDao.addTodo(todo)
 

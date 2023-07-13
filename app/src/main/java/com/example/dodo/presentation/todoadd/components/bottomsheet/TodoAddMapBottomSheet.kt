@@ -46,6 +46,8 @@ import com.example.dodo.ui.theme.gray07
 import com.example.dodo.ui.theme.gray09
 import com.example.dodo.util.noRippleClickable
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.CameraUpdate.scrollBy
 import com.naver.maps.map.CameraUpdate.scrollTo
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
@@ -119,7 +121,7 @@ fun TodoAddMapBottomSheet(
 
     LaunchedEffect(key1 = state.latitude, key2 = state.longitude) {
         val latLng = LatLng(state.latitude, state.longitude)
-        cameraPositionState.move(scrollTo(latLng))
+        cameraPositionState.position = CameraPosition(latLng, 14.0)
     }
 
     ModalBottomSheetLayout(
@@ -200,9 +202,11 @@ fun TodoAddMapBottomSheet(
                     .background(gray09),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                val enabled = !isMoving && !state.isLoading
+                val address = if (enabled) "[도로명] ${state.newAddress}" else "주소를 가져오고 있어요. 조금만 기다려주세요!"
                 Text(
                     modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
-                    text = "[도로명] ${state.newAddress}",
+                    text = address,
                     style = BoldN12,
                     color = gray0
                 )

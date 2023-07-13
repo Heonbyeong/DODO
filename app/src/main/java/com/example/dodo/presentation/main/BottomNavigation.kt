@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.dodo.presentation.Screen
+import com.example.dodo.presentation.base.Screen
 import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray07
 import com.example.dodo.ui.theme.gray09

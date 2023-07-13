@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.dodo.presentation.Navigation
+import com.example.dodo.presentation.base.Navigation
 
 @Composable
 fun MainScreen(navController: NavController) {

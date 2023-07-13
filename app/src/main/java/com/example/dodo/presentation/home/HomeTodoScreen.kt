@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.dodo.presentation.ScreenRoute
+import com.example.dodo.presentation.base.ScreenRoute
 import com.example.dodo.presentation.home.components.bottomsheet.HomeTodoDetailBottomSheet
 import com.example.dodo.presentation.home.components.calendar.HorizontalCalendar
 import com.example.dodo.presentation.home.components.todolist.HomeTodoListAddView
@@ -88,7 +88,8 @@ fun HomeTodoScreen(
         sideEffect.collect {
             when (it) {
                 is HomeTodoSideEffect.MoveToAdd -> {
-                    navController.navigate("${ScreenRoute.ADD.name}/${it.date}")
+                    closeSheet()
+                    navController.navigate("${ScreenRoute.ADD.name}/${it.date}/${it.isEdit}/${it.id}")
                 }
                 else -> {}
             }

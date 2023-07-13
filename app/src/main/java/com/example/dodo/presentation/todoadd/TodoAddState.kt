@@ -13,16 +13,22 @@ data class TodoAddState(
     val todoList: List<TodoEntity> = emptyList(),
     val todo: String = "",
     val date: LocalDate = LocalDate.now(),
-    val longitude: Double = 0.0,
-    val latitude: Double = 0.0,
+    val longitude: Double = 126.9783881,
+    val latitude: Double = 37.5666102,
     val addressText: String = "",
     val newAddress: String = "",
     val oldAddress: String = "",
     val jusoList: List<SearchAddressEntity.JusoEntity> = emptyList(),
     val time: LocalTime? = LocalTime.now(),
     val hasDestination: Boolean = false,
-    val hasTime: Boolean = false
+    val hasTime: Boolean = false,
+    val fromEdit: Boolean = false,
+    val id: Int = 0
 ) : State {
 
-    val hasOldAddress = oldAddress.isNotEmpty()
+    val hasOldAddress: Boolean
+        get() = oldAddress.isNotEmpty()
+
+    val titleText: String
+        get() = if (fromEdit) "할 일 수정" else "할 일 추가"
 }

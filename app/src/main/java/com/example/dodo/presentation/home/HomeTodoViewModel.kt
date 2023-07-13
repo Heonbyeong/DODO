@@ -36,6 +36,7 @@ class HomeTodoViewModel @Inject constructor(
             }
         }
     }
+
     fun onChangeDate(date: LocalDate) = intent {
         reduce {
             state.copy(selectedDate = date)
@@ -48,8 +49,14 @@ class HomeTodoViewModel @Inject constructor(
         }
     }
 
-    fun onClickAdd(date: LocalDate) = intent {
-        postSideEffect(HomeTodoSideEffect.MoveToAdd(date.toString()))
+    fun onClickAdd(date: LocalDate, isEdit: Boolean = false, id: Int = 0) = intent {
+        postSideEffect(
+            HomeTodoSideEffect.MoveToAdd(
+                date = date.toString(),
+                isEdit = isEdit,
+                id = id
+            )
+        )
     }
 
     private fun loadingStart() = intent {

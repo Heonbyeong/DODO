@@ -23,6 +23,7 @@ import com.example.dodo.ui.theme.gray0
 import com.example.dodo.ui.theme.gray04
 import com.example.dodo.util.timeFormat
 import org.orbitmvi.orbit.compose.collectAsState
+import java.time.LocalTime
 import java.util.Locale
 
 @Composable
@@ -45,8 +46,11 @@ fun TodoAddTimeSelectBottomSheet(
             color = gray0
         )
         Spacer(modifier = Modifier.height(20.dp))
+
+        val startTime = state.time ?: LocalTime.now()
         WheelTimePicker(
             modifier = Modifier.padding(bottom = 20.dp),
+            startTime = startTime,
             size = DpSize(300.dp, 128.dp),
             textColor = gray0,
             textStyle = MediumN12,

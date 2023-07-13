@@ -1,4 +1,4 @@
-package com.example.dodo.presentation
+package com.example.dodo.presentation.base
 
 import com.example.dodo.R
 

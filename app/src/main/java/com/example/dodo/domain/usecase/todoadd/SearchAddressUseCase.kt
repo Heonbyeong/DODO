@@ -1,7 +1,7 @@
 package com.example.dodo.domain.usecase.todoadd
 
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
-import com.example.dodo.domain.param.SearchAddressParam
+import com.example.dodo.domain.param.todoadd.SearchAddressParam
 import com.example.dodo.domain.repository.todoadd.TodoAddRepository
 import com.example.dodo.domain.usecase.base.BaseUseCase
 import javax.inject.Inject
