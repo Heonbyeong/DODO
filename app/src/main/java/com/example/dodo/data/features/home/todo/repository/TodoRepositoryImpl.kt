@@ -4,8 +4,8 @@ import com.example.dodo.data.features.home.todo.database.toEntity
 import com.example.dodo.data.features.home.todo.datasource.TodoLocalDataSource
 import com.example.dodo.domain.entity.todo.TodoEntity
 import com.example.dodo.domain.entity.todo.toDataEntity
-import com.example.dodo.domain.param.TodoAddParam
-import com.example.dodo.domain.param.toDataEntity
+import com.example.dodo.domain.param.todoadd.TodoAddParam
+import com.example.dodo.domain.param.todoadd.toDataEntity
 import com.example.dodo.domain.repository.todo.TodoRepository
 import java.time.LocalDate
 import javax.inject.Inject

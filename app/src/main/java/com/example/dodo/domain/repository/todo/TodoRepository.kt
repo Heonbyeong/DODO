@@ -1,7 +1,7 @@
 package com.example.dodo.domain.repository.todo
 
 import com.example.dodo.domain.entity.todo.TodoEntity
-import com.example.dodo.domain.param.TodoAddParam
+import com.example.dodo.domain.param.todoadd.TodoAddParam
 import java.time.LocalDate
 
 interface TodoRepository {

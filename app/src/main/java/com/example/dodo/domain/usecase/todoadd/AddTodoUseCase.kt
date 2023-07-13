@@ -1,6 +1,6 @@
 package com.example.dodo.domain.usecase.todoadd
 
-import com.example.dodo.domain.param.TodoAddParam
+import com.example.dodo.domain.param.todoadd.TodoAddParam
 import com.example.dodo.domain.repository.todo.TodoRepository
 import com.example.dodo.domain.usecase.base.BaseUseCase
 import javax.inject.Inject

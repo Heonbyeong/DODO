@@ -1,4 +1,4 @@
-package com.example.dodo.domain.param
+package com.example.dodo.domain.param.todoadd
 
 import com.example.dodo.data.features.home.todo.database.Todo
 import com.example.dodo.domain.entity.todo.TodoEntity

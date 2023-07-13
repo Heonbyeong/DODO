@@ -4,9 +4,9 @@ import android.location.Geocoder
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.dodo.domain.entity.todoadd.SearchAddressEntity
-import com.example.dodo.domain.param.SearchAddressParam
-import com.example.dodo.domain.param.TodoAddParam
-import com.example.dodo.domain.param.toTodoEntity
+import com.example.dodo.domain.param.todoadd.SearchAddressParam
+import com.example.dodo.domain.param.todoadd.TodoAddParam
+import com.example.dodo.domain.param.todoadd.toTodoEntity
 import com.example.dodo.domain.usecase.todo.FetchTodoUseCase
 import com.example.dodo.domain.usecase.todoadd.AddTodoUseCase
 import com.example.dodo.domain.usecase.todoadd.FetchTodoListWithDateUseCase
