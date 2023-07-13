@@ -22,7 +22,7 @@ data class TodoAddState(
     val time: LocalTime? = LocalTime.now(),
     val hasDestination: Boolean = false,
     val hasTime: Boolean = false,
-    val isEdit: Boolean = false,
+    val fromEdit: Boolean = false,
     val id: Int = 0
 ) : State {
 
@@ -30,5 +30,5 @@ data class TodoAddState(
         get() = oldAddress.isNotEmpty()
 
     val titleText: String
-        get() = if (isEdit) "할 일 수정" else "할 일 추가"
+        get() = if (fromEdit) "할 일 수정" else "할 일 추가"
 }

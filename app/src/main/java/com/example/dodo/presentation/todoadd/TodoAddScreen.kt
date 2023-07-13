@@ -171,7 +171,7 @@ fun TodoAddScreen(
                 itemsIndexed(items = state.todoList) { index, item ->
                     TodoAddItem(
                         todo = item,
-                        isEdit = state.isEdit
+                        isEdit = state.fromEdit
                     )
                 }
             }

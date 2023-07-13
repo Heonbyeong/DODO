@@ -41,7 +41,7 @@ class TodoAddViewModel @Inject constructor(
     }
 
     fun fetchTodoListWithDate() = intent {
-        if (!state.isLoading && !state.isEdit) {
+        if (!state.isLoading && !state.fromEdit) {
             loadingStart()
             viewModelScope.launch {
                 val todoList = fetchTodoListWithDateUseCase(state.date)
@@ -194,12 +194,12 @@ class TodoAddViewModel @Inject constructor(
         val date = savedStateHandle.get<String>("selectedDate")?.let {
             LocalDate.parse(it)
         } ?: LocalDate.now()
-        val isEdit = savedStateHandle["isEdit"] ?: false
+        val fromEdit = savedStateHandle["isEdit"] ?: false
         val id = savedStateHandle["id"] ?: 0
         reduce {
             state.copy(
                 date = date,
-                isEdit = isEdit,
+                fromEdit = fromEdit,
                 id = id
             )
         }
@@ -207,7 +207,7 @@ class TodoAddViewModel @Inject constructor(
     }
 
     private fun checkFromEdit() = intent {
-        if (!state.isLoading && state.isEdit) {
+        if (!state.isLoading && state.fromEdit) {
             loadingStart()
             viewModelScope.launch {
                 val todo = fetchTodoUseCase(state.id)
