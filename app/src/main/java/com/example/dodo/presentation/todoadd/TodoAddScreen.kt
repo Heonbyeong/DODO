@@ -243,7 +243,7 @@ fun TodoAddScreen(
                                     .padding(5.dp)
                                     .noRippleClickable {
                                         focusRequester.clearFocus()
-                                        viewModel.addTodo()
+                                        viewModel.onClickConfirm()
                                     },
                                 painter = painterResource(id = R.drawable.ic_circle_success),
                                 contentDescription = null,
