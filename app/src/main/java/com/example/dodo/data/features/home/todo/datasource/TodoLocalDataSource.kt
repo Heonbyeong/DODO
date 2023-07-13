@@ -15,7 +15,7 @@ interface TodoLocalDataSource {
 
     suspend fun editTodo(todo: Todo)
 
-    suspend fun deleteTodo(todo: Todo)
+    suspend fun deleteTodo(todo: Todo?)
 
     suspend fun doneTodo(id: Int, isDone: Boolean)
 

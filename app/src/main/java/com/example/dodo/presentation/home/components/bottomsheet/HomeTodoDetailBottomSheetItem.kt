@@ -38,14 +38,14 @@ fun HomeTodoDetailBottomSheetItem(
     color: Color,
     itemType: ItemType,
     checked: Boolean = true,
-    onClickItem: (() -> Unit)?,
+    onClickItem: () -> Unit,
     onCheckedChange: ((Boolean) -> Unit)?
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .noRippleClickable {
-                onClickItem?.let { it() }
+                onClickItem()
             },
         verticalAlignment = Alignment.CenterVertically
     ) {

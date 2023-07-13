@@ -23,8 +23,11 @@ class TodoLocalDataSourceImpl @Inject constructor(
     override suspend fun editTodo(todo: Todo) =
         todoDao.editTodo(todo)
 
-    override suspend fun deleteTodo(todo: Todo) =
-        todoDao.deleteTodo(todo)
+    override suspend fun deleteTodo(todo: Todo?) {
+        todo?.let {
+            todoDao.deleteTodo(todo)
+        }
+    }
 
     override suspend fun doneTodo(id: Int, isDone: Boolean) =
         todoDao.doneTodo(id, isDone)

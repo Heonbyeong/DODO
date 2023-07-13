@@ -138,7 +138,7 @@ fun HomeTodoDetailBottomSheet(
             modifier = Modifier.padding(vertical = 10.dp),
             color = red,
             itemType = ItemType.DELETE,
-            onClickItem = { /*TODO*/ },
+            onClickItem = viewModel::onClickDelete,
             onCheckedChange = null
         )
     }
