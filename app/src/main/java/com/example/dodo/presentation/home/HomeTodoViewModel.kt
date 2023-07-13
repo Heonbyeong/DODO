@@ -2,6 +2,7 @@ package com.example.dodo.presentation.home
 
 import androidx.lifecycle.viewModelScope
 import com.example.dodo.domain.entity.todo.TodoEntity
+import com.example.dodo.domain.usecase.todo.DeleteTodoUseCase
 import com.example.dodo.domain.usecase.todoadd.FetchTodoListWithDateUseCase
 import com.example.dodo.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeTodoViewModel @Inject constructor(
-    private val fetchTodoListWithDateUseCase: FetchTodoListWithDateUseCase
+    private val fetchTodoListWithDateUseCase: FetchTodoListWithDateUseCase,
+    private val deleteTodoUseCase: DeleteTodoUseCase,
 ) : BaseViewModel<HomeTodoState, HomeTodoSideEffect>() {
 
     override val container = container<HomeTodoState, HomeTodoSideEffect>(HomeTodoState())
@@ -35,6 +37,19 @@ class HomeTodoViewModel @Inject constructor(
                 loadingFinish()
             }
         }
+    }
+
+    private fun deleteTodo() {
+        intent {
+            if (!state.isLoading) {
+                loadingStart()
+                viewModelScope.launch {
+                    deleteTodoUseCase(state.todoDetail)
+                    loadingFinish()
+                }
+            }
+        }
+        fetchTodoListWithDate()
     }
 
     fun onChangeDate(date: LocalDate) = intent {
@@ -57,6 +72,11 @@ class HomeTodoViewModel @Inject constructor(
                 id = id
             )
         )
+    }
+
+    fun onClickDelete() = intent {
+        postSideEffect(HomeTodoSideEffect.HideBottomSheet)
+        deleteTodo()
     }
 
     private fun loadingStart() = intent {
