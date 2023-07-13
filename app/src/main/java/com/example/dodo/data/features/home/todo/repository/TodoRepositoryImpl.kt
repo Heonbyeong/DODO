@@ -30,8 +30,8 @@ class TodoRepositoryImpl @Inject constructor(
     override suspend fun editTodo(todo: EditTodoParam) =
         todoLocalDataSource.editTodo(todo.toDataEntity())
 
-    override suspend fun deleteTodo(todo: TodoEntity) =
-        todoLocalDataSource.deleteTodo(todo.toDataEntity())
+    override suspend fun deleteTodo(todo: TodoEntity?) =
+        todoLocalDataSource.deleteTodo(todo?.toDataEntity())
 
     override suspend fun doneTodo(id: Int, isDone: Boolean) =
         todoLocalDataSource.doneTodo(id, isDone)

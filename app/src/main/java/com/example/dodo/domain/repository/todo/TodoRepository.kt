@@ -17,7 +17,7 @@ interface TodoRepository {
 
     suspend fun editTodo(todo: EditTodoParam)
 
-    suspend fun deleteTodo(todo: TodoEntity)
+    suspend fun deleteTodo(todo: TodoEntity?)
 
     suspend fun doneTodo(id: Int, isDone: Boolean)
 
