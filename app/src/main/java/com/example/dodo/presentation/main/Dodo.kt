@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.dodo.presentation.ScreenRoute
+import com.example.dodo.presentation.base.ScreenRoute
 import com.example.dodo.presentation.common.NavAnimation
 import com.example.dodo.presentation.todoadd.TodoAddScreen
 
