@@ -111,29 +111,26 @@ class TodoAddViewModel @Inject constructor(
         }
     }
 
-    fun reverseGeocoding(latLng: LatLng) {
-        intent {
-            reduce {
-                state.copy(
-                    longitude = latLng.longitude,
-                    latitude = latLng.latitude
-                )
-            }
-        }
-        viewModelScope.launch {
-            val address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 2)
-            address?.get(0)?.let {
-                intent {
+    fun reverseGeocoding(latLng: LatLng) = intent {
+        if (!state.isLoading) {
+            loadingStart()
+            viewModelScope.launch {
+                val address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 2)
+                address?.get(0)?.let {
                     reduce {
                         state.copy(
+                            longitude = latLng.longitude,
+                            latitude = latLng.latitude,
                             newAddress = it.getAddressLine(0).removePrefix("대한민국"),
                             oldAddress = ""
                         )
                     }
+                    loadingFinish()
                 }
             }
         }
     }
+
 
     fun onChangeDate(date: LocalDate) = intent {
         reduce {
