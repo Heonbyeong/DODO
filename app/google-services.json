@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "39023642172",
+    "project_id": "dodo-31c70",
+    "storage_bucket": "dodo-31c70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39023642172:android:2df785eef0e0f01601a539",
+        "android_client_info": {
+          "package_name": "com.example.dodo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39023642172-9hags6lhm5th5v4c4br7pc12j69d7vee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dodo",
+            "certificate_hash": "3779278de201dba799d1d6ac0f88eff8e1ebbc17"
+          }
+        },
+        {
+          "client_id": "39023642172-18ki9m78ui0proh8hlv7gl9c2f41hutq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAko-0L-jxZqHk3_9wKGaHRCZBrmANrai8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39023642172-18ki9m78ui0proh8hlv7gl9c2f41hutq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
